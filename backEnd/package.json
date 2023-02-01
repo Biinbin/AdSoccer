@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "apollo-server-express": "^3.11.1",
+    "graphql": "^16.6.0",
+    "nodemon": "^2.0.20"
+  }
+}
