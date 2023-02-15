@@ -3,7 +3,7 @@ let world = require("./world")
 const { ApolloServer, gql } = require('apollo-server-express');
 // Construct a schema, using GraphQL schema language
 const typeDefs = require("./schema")
-
+const fs = require("fs").promises;
 // Provide resolver functions for your schema fields
 const resolvers = require("./resolvers")
 async function readUserWorld(user) {
