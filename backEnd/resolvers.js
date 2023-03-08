@@ -1,4 +1,4 @@
-const {lastupdate, allunlocks} = require("./world");
+const {lastupdate, allunlocks, angelbonus} = require("./world");
 let worldjs = require("./world");
 const fs = require("fs").promises;
 
@@ -18,13 +18,13 @@ function updateScore(context) {
     let qte = 0;
     context.world.products.forEach(produitR => {
         // SI le produit n'a pas de manager
-         if(produitR.managerUnlocked === false) {
+        if (produitR.managerUnlocked === false) {
             // SI le produit n'a pas de manager
             if (produitR.timeleft != 0 && produitR.timeleft < tempsEcoule) {
                 qte = 1;
                 produitR.timeleft = 0;
             }
-         // SI le produit a un manager
+            // SI le produit a un manager
         } else if (produitR.managerUnlocked) {
             if (produitR.timeleft > 0) {
                 tempsEcouleProd = tempsEcoule - produitR.timeleft
@@ -77,6 +77,7 @@ function addBonus(bonus, context) {
         }
     } else if (bonus.idcible == -1) {
         bonus.unlocked = true;
+        world.angelbonus = bonus.ratio * world.angelbonus
     }
 }
 
@@ -155,12 +156,17 @@ module.exports = {
             let managerProduct = manager.idcible;
             let produit = world.products.find((p) => p.id === managerProduct);
 
-            context.world.money -= manager.seuil
-            manager.unlocked = true;
-            produit.managerUnlocked = true;
-            world.lastupdate = Date.now().toString();
-            saveWorld(context)
-            return manager
+            if (manager === undefined) {
+                throw new Error(
+                    `Le manager avec l'id ${args.id} n'existe pas`)
+            } else {
+                context.world.money -= manager.seuil
+                manager.unlocked = true;
+                produit.managerUnlocked = true;
+                world.lastupdate = Date.now().toString();
+                saveWorld(context)
+                return manager
+            }
         },
 
         acheterCashUpgrade(parent, args, context) {
@@ -171,7 +177,7 @@ module.exports = {
 
             if (upgrade === undefined) {
                 throw new Error(
-                    `L'upgrade ${upgrade.name} n'existe pas`);
+                    `L'upgrade avec l'id ${args.id} n'existe pas`);
             } else {
                 world.money -= upgrade.seuil;
                 addBonus(upgrade, context);
@@ -189,7 +195,7 @@ module.exports = {
 
             if (angel === undefined) {
                 throw new Error(
-                    `L'ange ${angel.name} n'existe pas`);
+                    `L'ange avec l'id ${args.id} n'existe pas`);
             } else {
                 world.activeangels -= angel.seuil;
                 addBonus(angel, context);
@@ -204,16 +210,24 @@ module.exports = {
             let score = actWorld.score;
             let activeangels = actWorld.activeangels;
             let totalangels = actWorld.totalangels;
-            let nWorld;
 
             //Réinitialisation
-            nWorld = worldjs;
+            let nWorld = worldjs;
 
+            //Récupération des anges
             nWorld.totalangels = totalangels;
             nWorld.activeangels = activeangels;
 
-            nWorld.activeangels += Math.round(150 * Math.sqrt(score / Math.pow(10, 15)) - totalangels);
-            nWorld.totalangels += Math.round(150 * Math.sqrt(score / Math.pow(10, 15)));
+            //Calcul des anges
+            let activeAngelsBis = Math.round(150 * Math.sqrt(score / Math.pow(10, 4)) - totalangels);
+            let totalAngelsBis = Math.round(150 * Math.sqrt(score / Math.pow(10, 4)) - totalangels);
+
+            if (activeAngelsBis > 0) {
+                nWorld.activeangels += activeAngelsBis
+                nWorld.totalangels += totalAngelsBis
+            }
+
+            //Réinitialisation du score à 0
             nWorld.score = 0;
 
             nWorld.lastupdate = Date.now().toString();
