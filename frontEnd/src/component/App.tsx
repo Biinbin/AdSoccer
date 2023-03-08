@@ -25,7 +25,7 @@ const GET_WORLD = gql`
       quantite
       timeleft
       managerUnlocked
-      paliers {
+      palliers {
         name
         logo
         seuil

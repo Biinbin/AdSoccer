@@ -5,8 +5,8 @@
 }
 
 .main-title {
-    font-size: 3rem;
-    margin: 2rem 0;
+    font-size: 1rem;
+    text-align: left;
     color: #222;
 }
 
@@ -47,4 +47,8 @@
 
 .multi:hover {
     background-color: #ff9e40;
+}
+
+.left-panel{
+
 }

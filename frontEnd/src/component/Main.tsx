@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { World, Product } from "../world";
+import { World, Product} from "../world";
 import "../style/main.css";
 import '../style/Product.css'
 import ProductComponent from "./Product";
 import {transform} from "./utils";
+import managers from "./Managers";
 
 type MainProps = {
     loadworld: World;
@@ -48,19 +49,62 @@ export default function Main({ loadworld, username }: MainProps) {
     }
 
     const [qtmulti, setQtmulti] = useState("x1");
+    const [isManagerOpen, setIsManagerOpen] = useState(false);
+
+    function openManager() {
+        setIsManagerOpen(true);
+    }
+    function closeManager() {
+        setIsManagerOpen(false);
+    }
+
 
     return (
         <div className="main-container">
             <h1 className="main-title">
                 Welcome to {world.name}, {username}!
+                <img className="logoW"
+                     src={"http://localhost:4000/" + world.logo}
+                     alt={world.name}
+                />
             </h1>
             <div className="money-container">
                 <span className="money-label">Cagnotte Totale</span>
                 <span className="money-value"><span dangerouslySetInnerHTML={{__html: transform(world.money)}}/>$</span>
             </div>
-            <img className="logoW"
-                src={"https://isiscapitalistgraphql.kk.kurasawa.fr/" + world.logo}
-                alt={world.name}/>
+            <div className="left-panel">
+                <button onClick={openManager}>Managers</button>
+                <div> {isManagerOpen &&
+                    <div className="modal">
+                        <div>
+                            <h1 className="title">Managers make you feel better !</h1>
+                        </div>
+                        <div>
+                            world.managers.pallier.filter( manager => !manager.unlocked).map(
+                            manager =>
+                            <div key={managers.idcible} className="managergrid">
+                                <div>
+                                    <div className="logo">
+                                        <img alt="manager logo" className="round" src={
+                                            this.props.services.server + managers.logo}/>
+                                    </div>
+                                </div>
+                                <div className="infosmanager">
+                                    <div className="managername"> {managers.name} </div>
+                                    <div className="managercible"> {
+                                        this.props.world.products.product[managers.idcible - 1].name} </div>
+                                    <div className="managercost"> {managers.seuil} </div>
+                                </div>
+                                <div onClick={() => this.hireManager(managers)}>
+                                    <Button disabled={this.props.world.money < managers.seuil}>
+                                        Hire !</Button>
+                                </div>
+                            </div>
+                            )
+                            <button className="closebutton" (click)="showManagers =
+                            !showManagers">Close
+                        </button>
+            </div>
             <button className="multi" onClick={() =>{
                 switch(qtmulti) {
                     case "x1":

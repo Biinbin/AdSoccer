@@ -82,8 +82,7 @@ function ProductComponent({ product, onProductionDone,onProductBuy, qtmulti, mon
 
     return (
         <div className="product-container">
-            <img className="product-image" src={"https://isiscapitalistgraphql.kk.kurasawa.fr/" + product.logo} onClick={startFabrication} alt={product.name} />
-            <h2 className="product-name">{product.name}</h2>
+            <img className="product-image" src={"http://localhost:4000/" + product.logo} onClick={startFabrication} alt={product.name} />
             <p className="product-description">{product.quantite}</p>
             <div className="product-price">
                 <span dangerouslySetInnerHTML={{__html: transform(product.revenu*product.croissance)}}></span>$
