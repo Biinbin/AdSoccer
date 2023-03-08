@@ -4,65 +4,28 @@ import {gql, useApolloClient, useQuery} from '@apollo/client';
 import Main from "./Main";
 
 const GET_WORLD = gql`
-  query ExampleQuery {
-    getWorld {
-      activeangels
-      allunlocks {
-        name
-        logo
-        seuil
-        idcible
-        ratio
-        typeratio
-        unlocked
-      }
-      angelbonus
-      angelupgrades {
-        name
-        logo
-        seuil
-        idcible
-        ratio
-        typeratio
-        unlocked
-      }
-      lastupdate
-      logo
-      managers {
-        name
-        logo
-        seuil
-        idcible
-        ratio
-        typeratio
-        unlocked
-      }
-      money
+  query getWorld {
+  getWorld {
+    name
+    logo
+    money
+    score
+    totalangels
+    activeangels
+    angelbonus
+    lastupdate
+    products {
+      id
       name
-      products {
-        id
-        name
-        logo
-        cout
-        croissance
-        revenu
-        vitesse
-        quantite
-        timeleft
-        managerUnlocked
-        paliers {
-          idcible
-          logo
-          name
-          ratio
-          seuil
-          typeratio
-          unlocked
-        }
-      }
-      score
-      totalangels
-      upgrades {
+      logo
+      cout
+      croissance
+      revenu
+      vitesse
+      quantite
+      timeleft
+      managerUnlocked
+      paliers {
         name
         logo
         seuil
@@ -72,7 +35,44 @@ const GET_WORLD = gql`
         unlocked
       }
     }
+    allunlocks {
+      name
+      logo
+      seuil
+      idcible
+      ratio
+      typeratio
+      unlocked
+    }
+    upgrades {
+      name
+      logo
+      seuil
+      idcible
+      ratio
+      typeratio
+      unlocked
+    }
+    angelupgrades {
+      name
+      logo
+      seuil
+      idcible
+      ratio
+      typeratio
+      unlocked
+    }
+    managers {
+      name
+      logo
+      seuil
+      idcible
+      ratio
+      typeratio
+      unlocked
+    }
   }
+}
 `;
 
 function App() {
@@ -93,7 +93,7 @@ function App() {
     let main = undefined;
     if (loading) corps = <div> Loading... </div>;
     else if (error) corps = <div> Erreur de chargement du monde ! </div>;
-    else main=<div> <Main loadworld={data.getWorld} username={username} /> </div>;
+    else main=<div> <Main loadworld={data.getWorld} username={username}/> </div>;
 
     return (
         <div>
