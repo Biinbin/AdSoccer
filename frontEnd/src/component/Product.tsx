@@ -3,6 +3,7 @@ import '../style/Product.css'
 import {useState, useEffect, useRef} from "react";
 import MyProgressbar, { Orientation } from "./MyProgressbar";
 import {useInterval} from './MyInterval';
+import {transform} from "./utils";
 
 type ProductProps = {
     product: Product;
@@ -45,13 +46,14 @@ function ProductComponent({ product, onProductionDone,onProductBuy, qtmulti, mon
         const affordable = money / cost;
         if (growth === 1) {
             return Math.floor(affordable);
+            //nombre d'unités que l'utilisateur peut acheter avec son argent disponible, arrondi à l'entier inférieur
         } else {
             const maxBuyable = Math.floor(Math.log(1 - affordable * (1 - growth)) / Math.log(growth));
             return maxBuyable > 0 ? maxBuyable : 0;
+            //nombre maximal d'unités achetables en prenant en compte le taux de croissance
         }
     }
     function handleBuyProduct() {
-
         const canBuy = calcMaxCanBuy();
         switch (qtmulti) {
             case "x1" :
@@ -73,17 +75,19 @@ function ProductComponent({ product, onProductionDone,onProductBuy, qtmulti, mon
         }
     }
 
-
     useEffect(() => {
+        //garantit que la valeur de maxBuyable est toujours à jour avec le montant d'argent de l'utilisateur et le coût du produit
         setMaxBuyable(calcMaxCanBuy());
     }, [money, product]);
 
     return (
         <div className="product-container">
-                <img className="product-image" src={"https://isiscapitalistgraphql.kk.kurasawa.fr/" + product.logo} onClick={startFabrication} alt={product.name} />
+            <img className="product-image" src={"https://isiscapitalistgraphql.kk.kurasawa.fr/" + product.logo} onClick={startFabrication} alt={product.name} />
             <h2 className="product-name">{product.name}</h2>
             <p className="product-description">{product.quantite}</p>
-            <div className="product-price">{product.cout} $</div>
+            <div className="product-price">
+                <span dangerouslySetInnerHTML={{__html: transform(product.revenu*product.croissance)}}></span>$
+            </div>
             <MyProgressbar className="barstyle"
                            vitesse={product.vitesse}
                            initialvalue={product.vitesse - timeLeft}
@@ -94,7 +98,12 @@ function ProductComponent({ product, onProductionDone,onProductBuy, qtmulti, mon
                            orientation={Orientation.horizontal}
             />
             <p>Time left: {timeLeft}s</p>
-            <button className="product-buy-button" /*onClick={handleBuyProduct}*/ id={"handleBuyProduct" + product.id.toString()}>Buy {qtmulti}$</button>
+            <button className="product-buy-button"
+                    onClick={handleBuyProduct}
+                    id={"handleBuyProduct" + product.id.toString()}>
+                Buy {qtmulti} for :
+                <span dangerouslySetInnerHTML={{__html: transform( product.cout )}}></span>$
+            </button>
         </div>
     );
 }

@@ -13,8 +13,7 @@ type MainProps = {
 export default function Main({ loadworld, username }: MainProps) {
     const [world, setWorld] = useState(
         JSON.parse(JSON.stringify(loadworld)) as World
-);
-    const [money, setMoney] = useState(world.money);
+    );
 
     useEffect(() => {
         setWorld(JSON.parse(JSON.stringify(loadworld)) as World);
@@ -24,16 +23,20 @@ export default function Main({ loadworld, username }: MainProps) {
         // calcul de la somme obtenue par la production du produit
         let gain = (p.quantite * p.revenu)
         world.score += gain
+        world.money+=gain
         // ajout de la somme à l’argent possédé
         setWorld(prevWorld => ({...prevWorld, score: prevWorld.score + gain}));
     }
 
-    const [qtmulti, setQtmulti] = useState(1);
     function onProductBuy(quantity: number, product: Product): void {
-        const prix = prev(quantity, product)
-        product.quantite=product.quantite+quantity
+        let prix = prev(quantity, product)
+        //console.log(product.quantite)
+        product.quantite= product.quantite + quantity
+        //console.log(product.quantite)
         product.cout=product.cout*Math.pow(product.croissance, quantity)
         world.money = world.money - prix
+        setWorld(prevWorld => ({...prevWorld, money: prevWorld.money}));
+
     }
 
     //calcule le prix du produit en fonction de sa quantité et de sa croissance
@@ -43,7 +46,9 @@ export default function Main({ loadworld, username }: MainProps) {
             price = product.cout+(product.cout*product.croissance)
         }return price
     }
-    
+
+    const [qtmulti, setQtmulti] = useState("x1");
+
     return (
         <div className="main-container">
             <h1 className="main-title">
@@ -56,6 +61,23 @@ export default function Main({ loadworld, username }: MainProps) {
             <img className="logoW"
                 src={"https://isiscapitalistgraphql.kk.kurasawa.fr/" + world.logo}
                 alt={world.name}/>
+            <button className="multi" onClick={() =>{
+                switch(qtmulti) {
+                    case "x1":
+                    setQtmulti("x10");
+                    break;
+                    case "x10":
+                    setQtmulti("x100");
+                    break;
+                    case "x100":
+                    setQtmulti("MAX");
+                    break;
+                    default:
+                    setQtmulti("x1");
+                    break;
+                }}
+            }>{qtmulti}
+            </button>
             <h2 className="product-title">Liste des produits :</h2>
             <div className="product-grid">
                 <ProductComponent product={world.products[0]}

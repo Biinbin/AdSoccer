@@ -32,3 +32,19 @@
     height: auto;
     margin-top: 2rem;
 }
+
+.multi {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #ff8400;
+    border: none;
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.multi:hover {
+    background-color: #ff9e40;
+}
