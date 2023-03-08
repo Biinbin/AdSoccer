@@ -1,6 +1,7 @@
 const {lastupdate, allunlocks} = require("./world");
 let worldjs = require("./world");
 const fs = require("fs").promises;
+
 function saveWorld(context) {
     fs.writeFile("userworlds/" + context.user + "-world.json",
         JSON.stringify(context.world), err => {
@@ -12,49 +13,49 @@ function saveWorld(context) {
         })
 }
 
-function updateScore(context){
-    let world = context.world
-    let produits = world.products
-    let tempsEcoule = Date.now - parseInt(world.lastupdate);
+function updateScore(context) {
+    let tempsEcoule = Date.now() - parseInt(context.world.lastupdate);
     let qte = 0;
-    for(let i=0; i < produits.length; i++){
-        let produitR = produits[i];
-
+    context.world.products.forEach(produitR => {
         // SI le produit n'a pas de manager
-        if(produitR.managerUnlocked === false){
-            if (produitR.timeleft != 0 && produitR.timeleft < tempsEcoule){
+         if(produitR.managerUnlocked === false) {
+            // SI le produit n'a pas de manager
+            if (produitR.timeleft != 0 && produitR.timeleft < tempsEcoule) {
                 qte = 1;
-            }else if(produitR.timeleft === 0 ){
-                qte = 0;
-            } else {
-                produitR.timeleft -= tempsEcoule;
+                produitR.timeleft = 0;
             }
-
-        // SI le produit a un manager
-        } else {
-            if(produitR.timeleft < tempsEcoule) {
-                tempsEcoule -= produitR.timeleft
-                qte = Math.floor(tempsEcoule / produitR.vitesse) + 1;
-                produitR.timeleft = produitR.vitesse - (tempsEcoule % produitR.timeleft);
+         // SI le produit a un manager
+        } else if (produitR.managerUnlocked) {
+            if (produitR.timeleft > 0) {
+                tempsEcouleProd = tempsEcoule - produitR.timeleft
+                if (tempsEcouleProd < 0) {
+                    produitR.timeleft -= tempsEcoule
+                } else {
+                    qte = (tempsEcouleProd / produitR.vitesse) + 1
+                    produitR.timeleft = tempsEcouleProd % produitR.vitesse
+                }
             } else {
-                produitR.timeleft -= tempsEcoule;
+                produitR.timeleft -= tempsEcoule
+                if (produitR.timeleft <= 0) {
+                    qte = 1
+                    produitR.timeleft = 0
+                }
             }
         }
         // Actualisation de l'argent et du score du monde
-        world.money += (produitR.revenu * produitR.quantite * (1 + world.activeangels * world.angelbonus  /100)) * qte;
-        world.score += (produitR.revenu * produitR.quantite * (1 + world.activeangels * world.angelbonus  /100)) * qte;
-    }
-    world.lastupdate = Date.now().toString();
-    saveWorld(context);
+        context.world.score += qte * produitR.revenu * produitR.quantite * (1 + context.world.activeangels * context.world.angelbonus / 100)
+        context.world.money += qte * produitR.revenu * produitR.quantite * (1 + context.world.activeangels * context.world.angelbonus / 100)
+    })
+    context.world.lastupdate = Date.now().toString()
 }
 
 function addBonus(bonus, context) {
     let world = context.world;
     let produit = world.products.find((p) => p.id === bonus.idcible);
     // 3 if != 0 ou pas -1
-    if(bonus.idcible != -1 && bonus.idcible != 0) {
+    if (bonus.idcible != -1 && bonus.idcible != 0) {
         if (bonus.typeratio === "vitesse") {
-            produit.vitesse = produit.vitesse / bonus.ratio;
+            Math.round(produit.vitesse = produit.vitesse / bonus.ratio);
             bonus.unlocked = true;
 
         } else if (bonus.typeratio === "gain") {
@@ -64,7 +65,7 @@ function addBonus(bonus, context) {
     } else if (bonus.idcible == 0) {
         if (bonus.typeratio === "vitesse") {
             world.products.forEach(p => {
-                p.vitesse = p.vitesse / bonus.ratio;
+                Math.round(p.vitesse = p.vitesse / bonus.ratio);
             })
             bonus.unlocked = true;
 
@@ -74,7 +75,7 @@ function addBonus(bonus, context) {
             })
             bonus.unlocked = true;
         }
-    } else if (bonus.idcible == -1){
+    } else if (bonus.idcible == -1) {
         bonus.unlocked = true;
     }
 }
@@ -83,26 +84,27 @@ function addBonus(bonus, context) {
 module.exports = {
     Query: {
         getWorld(parent, args, context) {
+            updateScore(context)
             saveWorld(context)
             return context.world
         }
     },
     Mutation: {
-        acheterQtProduit(parent, args, context){
+        acheterQtProduit(parent, args, context) {
             updateScore(context)
             let qte = args.quantite;
             let idProduit = args.id;
             let world = context.world;
             let produit = world.products.find((p) => p.id === idProduit);
-            let coef = Math.pow(produit.croissance, produit.quantite);
+            let coef = Math.pow(produit.croissance, qte);
 
-            if (produit === undefined){
+            if (produit === undefined) {
                 throw new Error(
                     `Le produit avec l'id ${args.id} n'existe pas`);
             } else {
-                context.world.money -= produit.cout*((1-coef) / (1-produit.croissance));
+                context.world.money -= produit.cout * ((1 - coef) / (1 - produit.croissance));
                 produit.quantite += qte;
-                produit.cout = produit.cout * Math.pow(produit.croissance,qte);
+                produit.cout = produit.cout * Math.pow(produit.croissance, qte);
 
                 let palierDebloques = produit.palliers.filter((p => p.unlocked === false && p.ratio < produit.quantite));
                 palierDebloques.forEach(p => {
@@ -115,11 +117,11 @@ module.exports = {
                 allUnlocksDebloques.forEach(u => {
                     world.products.forEach(p => {
                         nbTotal += 1;
-                        if(p.quantite >= u.seuil){
-                            counter +=1
+                        if (p.quantite >= u.seuil) {
+                            counter += 1
                         }
                     })
-                    if(counter === nbTotal) {
+                    if (counter === nbTotal) {
                         addBonus(u, context)
                     }
                 })
@@ -128,28 +130,24 @@ module.exports = {
                 saveWorld(context);
                 return produit;
             }
-},
-        lancerProductionProduit(parent, args, context){
+        },
+        lancerProductionProduit(parent, args, context) {
             updateScore(context)
             let idProduit = args.id;
             let world = context.world;
             let produit = world.products.find((p) => p.id === idProduit)
-            let vitesseProduit = produit.vitesse;
-            let timeleft = produit.timeleft;
 
-            if(produit === undefined){
+            if (produit === undefined) {
                 throw new Error(
                     `Le produit avec l'id ${args.id} n'existe pas`)
-            }
-            else{
-                timeleft = vitesseProduit
-                world.lastupdate = Date.now().toString();
+            } else {
+                produit.timeleft = produit.vitesse
                 saveWorld(context)
                 return produit
             }
         },
 
-        engagerManager(parent, args, context){
+        engagerManager(parent, args, context) {
             updateScore(context)
             let nomManager = args.name;
             let world = context.world;
@@ -165,13 +163,13 @@ module.exports = {
             return manager
         },
 
-        acheterCashUpgrade(parent, args, context){
+        acheterCashUpgrade(parent, args, context) {
             updateScore(context)
             let world = context.world;
             let nameUpgrade = args.name;
             let upgrade = world.upgrades.find((u) => u.name === nameUpgrade);
 
-            if (upgrade === undefined){
+            if (upgrade === undefined) {
                 throw new Error(
                     `L'upgrade ${upgrade.name} n'existe pas`);
             } else {
@@ -183,17 +181,17 @@ module.exports = {
             }
         },
 
-        acheterAngelUpgrade(parent, args, context){
+        acheterAngelUpgrade(parent, args, context) {
             updateScore(context)
             let world = context.world;
             let nameAngel = args.name;
             let angel = world.angelupgrades.find((a) => a.name === nameAngel);
 
-            if (angel === undefined){
+            if (angel === undefined) {
                 throw new Error(
                     `L'ange ${angel.name} n'existe pas`);
             } else {
-                world.money -= angel.seuil;
+                world.activeangels -= angel.seuil;
                 addBonus(angel, context);
                 world.lastupdate = Date.now().toString();
                 saveWorld(context);
@@ -201,11 +199,12 @@ module.exports = {
             }
         },
 
-        resetWorld(parent, args, context){
+        resetWorld(parent, args, context) {
             let actWorld = context.world;
             let score = actWorld.score;
             let activeangels = actWorld.activeangels;
             let totalangels = actWorld.totalangels;
+            let nWorld;
 
             //Réinitialisation
             nWorld = worldjs;
@@ -213,14 +212,14 @@ module.exports = {
             nWorld.totalangels = totalangels;
             nWorld.activeangels = activeangels;
 
-            nWorld.activeangels += Math.round(150 * Math.sqrt(score/Math.pow(10,15)) - totalangels);
-            nWorld.totalangels += Math.round(150 * Math.sqrt(score/Math.pow(10,15)));
+            nWorld.activeangels += Math.round(150 * Math.sqrt(score / Math.pow(10, 15)) - totalangels);
+            nWorld.totalangels += Math.round(150 * Math.sqrt(score / Math.pow(10, 15)));
             nWorld.score = 0;
 
             nWorld.lastupdate = Date.now().toString();
             context.world = nWorld;
             saveWorld(context);
             return nWorld;
-            }
+        }
     }
 }

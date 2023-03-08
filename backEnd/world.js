@@ -48,7 +48,7 @@ module.exports = {
             "croissance": 1.15,
             "revenu": 60,
             "vitesse": 3000,
-            "quantite": 1,
+            "quantite": 0,
             "timeleft": 0,
             "managerUnlocked": false,
             "palliers": [
@@ -71,7 +71,136 @@ module.exports = {
                     "unlocked": false
                 }
             ]
-        }],
+        },
+        {
+            "id": 3,
+            "name": "Deuxième produit",
+            "logo": "public/deuxiemeproduit.jpg",
+            "cout": 60,
+            "croissance": 1.15,
+            "revenu": 60,
+            "vitesse": 3000,
+            "quantite": 0,
+            "timeleft": 0,
+            "managerUnlocked": false,
+            "palliers": [
+                {
+                    "name": "Nom du premier palier",
+                    "logo": "public/premierpalierpremierproduit.jpg",
+                    "seuil": 20,
+                    "idcible": 1,
+                    "ratio": 2,
+                    "typeratio": "vitesse",
+                    "unlocked": false
+                },
+                {
+                    "name": "Nom deuxième palier",
+                    "logo": "public/deuxiemepalierpremierproduit.jpg",
+                    "seuil": 75,
+                    "idcible": 1,
+                    "ratio": 2,
+                    "typeratio": "vitesse",
+                    "unlocked": false
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "name": "Deuxième produit",
+            "logo": "public/deuxiemeproduit.jpg",
+            "cout": 60,
+            "croissance": 1.15,
+            "revenu": 60,
+            "vitesse": 3000,
+            "quantite": 0,
+            "timeleft": 0,
+            "managerUnlocked": false,
+            "palliers": [
+                {
+                    "name": "Nom du premier palier",
+                    "logo": "public/premierpalierpremierproduit.jpg",
+                    "seuil": 20,
+                    "idcible": 1,
+                    "ratio": 2,
+                    "typeratio": "vitesse",
+                    "unlocked": false
+                },
+                {
+                    "name": "Nom deuxième palier",
+                    "logo": "public/deuxiemepalierpremierproduit.jpg",
+                    "seuil": 75,
+                    "idcible": 1,
+                    "ratio": 2,
+                    "typeratio": "vitesse",
+                    "unlocked": false
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "name": "Deuxième produit",
+            "logo": "public/deuxiemeproduit.jpg",
+            "cout": 60,
+            "croissance": 1.15,
+            "revenu": 60,
+            "vitesse": 3000,
+            "quantite": 0,
+            "timeleft": 0,
+            "managerUnlocked": false,
+            "palliers": [
+                {
+                    "name": "Nom du premier palier",
+                    "logo": "public/premierpalierpremierproduit.jpg",
+                    "seuil": 20,
+                    "idcible": 1,
+                    "ratio": 2,
+                    "typeratio": "vitesse",
+                    "unlocked": false
+                },
+                {
+                    "name": "Nom deuxième palier",
+                    "logo": "public/deuxiemepalierpremierproduit.jpg",
+                    "seuil": 75,
+                    "idcible": 1,
+                    "ratio": 2,
+                    "typeratio": "vitesse",
+                    "unlocked": false
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "name": "Deuxième produit",
+            "logo": "public/deuxiemeproduit.jpg",
+            "cout": 60,
+            "croissance": 1.15,
+            "revenu": 60,
+            "vitesse": 3000,
+            "quantite": 0,
+            "timeleft": 0,
+            "managerUnlocked": false,
+            "palliers": [
+                {
+                    "name": "Nom du premier palier",
+                    "logo": "public/premierpalierpremierproduit.jpg",
+                    "seuil": 20,
+                    "idcible": 1,
+                    "ratio": 2,
+                    "typeratio": "vitesse",
+                    "unlocked": false
+                },
+                {
+                    "name": "Nom deuxième palier",
+                    "logo": "public/deuxiemepalierpremierproduit.jpg",
+                    "seuil": 75,
+                    "idcible": 1,
+                    "ratio": 2,
+                    "typeratio": "vitesse",
+                    "unlocked": false
+                }
+            ]
+        },],
+
     "allunlocks": [
         {
             "name": "Nom du premier unlock général",
