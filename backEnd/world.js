@@ -267,8 +267,8 @@ module.exports = {
         },],
     "upgrades": [
         {
-            "name": "Olivier Focus",
-            "logo": "public/premierupgrade.jpg",
+            "name": "Montpelier",
+            "logo": "public/montpelier.jpg",
             "seuil": 1e3,
             "idcible": 1,
             "ratio": 3,
@@ -276,10 +276,28 @@ module.exports = {
             "unlocked": false
         },
         {
-            "name": "Nom du premier upgrade",
-            "logo": "public/premierupgrade.jpg",
+            "name": "Chelsea",
+            "logo": "public/chelsea.jpg",
             "seuil": 2e3,
             "idcible": 1,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Monaco",
+            "logo": "public/premierupgrade.jpg",
+            "seuil": 1e3,
+            "idcible": 2,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Paris Saint-Germain",
+            "logo": "public/premierupgrade.jpg",
+            "seuil": 2e3,
+            "idcible": 2,
             "ratio": 3,
             "typeratio": "gain",
             "unlocked": false
@@ -316,7 +334,7 @@ module.exports = {
         },
         {
             "name": "Pep Guardiola",
-            "logo": "icones/pepGuardiola",
+            "logo": "icones/pepGuardiola.png",
             "seuil": 10,
             "idcible": 3,
             "ratio": 0,
@@ -325,7 +343,7 @@ module.exports = {
         },
         {
             "name": "Aimé Jacquet",
-            "logo": "icones/Photo-Jacquet",
+            "logo": "icones/Photo-Jacquet.png",
             "seuil": 10,
             "idcible": 4,
             "ratio": 0,
@@ -343,7 +361,7 @@ module.exports = {
         },
         {
             "name": "Carlo Ancelotti",
-            "logo": "icones/carloAncelotti",
+            "logo": "icones/carloAncelotti.png",
             "seuil": 10,
             "idcible": 6,
             "ratio": 0,
