@@ -1,44 +1,57 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {Pallier, World} from "../world";
+import {Button} from "@mui/material";
+import "../style/Managers.css"
+
 
 type ManagersProps = {
-    showManagers: false,
+    showManagers: boolean;
+    managers : Pallier;
+    world: World;
+    onHireManager : (manager: Pallier) => void;
+    onClose : () => void;
+
 }
-function ManagersComponent({ showManagers}: ManagersProps) {
-/*
-    const toggleManagers = () => {
-        setState({ showManagers: !showManagers });
+function ManagersComponent({ showManagers, managers, world, onHireManager, onClose}: ManagersProps) {
+
+    const [State, setState] = useState(showManagers);
+
+
+    function toggleManagers(){
+        console.log("Toggle Managers, State =", State);
+        setState(!State);
+        onClose();
     }
 
-    const hireManager = (manager) => {
+    function hireManager(manager : Pallier) {
         if (world.money >= manager.seuil) {
-            onHireManager(manager.id);
+            onHireManager(manager);
         }
     }
 
-
     return (
         <div>
-            {this.state.showManagers &&
+            {showManagers &&
                 <div className="modal">
                     <div>
                         <h1 className="title">Managers make you feel better !</h1>
                     </div>
                     <div>
-                        { this.props.world.managers.pallier.filter(manager => !manager.unlocked).map(
-                            manager =>
-                                <div key={manager.idcible} className="managergrid">
+                        { world.managers.filter(managers => !managers.unlocked).map(
+                            managers =>
+                                <div key={managers.idcible} className="managergrid">
                                     <div>
                                         <div className="logo">
-                                            <img alt="manager logo" className="round" src={this.props.services.server + manager.logo} />
+                                            <img alt="manager logo" className="round" src={"http://localhost:4000/" + managers.logo} />
                                         </div>
                                     </div>
                                     <div className="infosmanager">
-                                        <div className="managername">{manager.name}</div>
-                                        <div className="managercible">{this.props.world.products.product[manager.idcible-1].name}</div>
-                                        <div className="managercost">{manager.seuil}</div>
+                                        <div className="managername">{managers.name}</div>
+                                        <div className="managercible">{world.products[managers.idcible-1].name}</div>
+                                        <div className="managercost">{managers.seuil}</div>
                                     </div>
-                                    <div onClick={() => hireManager(manager)}>
-                                        <Button disabled={this.props.world.money < manager.seuil}>Hire !</Button>
+                                    <div onClick={() => hireManager(managers)}>
+                                        <Button disabled={world.money < managers.seuil}>Hire !</Button>
                                     </div>
                                 </div>
                         )
@@ -48,6 +61,6 @@ function ManagersComponent({ showManagers}: ManagersProps) {
                 </div>
             }
         </div>
-    );*/
+    );
 }
 export default ManagersComponent;

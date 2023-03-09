@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { World, Product} from "../world";
+import { World, Product, Pallier} from "../world";
 import "../style/main.css";
 import '../style/Product.css'
 import ProductComponent from "./Product";
 import {transform} from "./utils";
-import managers from "./Managers";
+import ManagersComponent from "./Managers";
 
 type MainProps = {
     loadworld: World;
@@ -51,13 +51,26 @@ export default function Main({ loadworld, username }: MainProps) {
     const [qtmulti, setQtmulti] = useState("x1");
     const [isManagerOpen, setIsManagerOpen] = useState(false);
 
-    function openManager() {
-        setIsManagerOpen(true);
-    }
-    function closeManager() {
-        setIsManagerOpen(false);
+    function onHireManager(manager: Pallier): void{
+        let arg = world.money
+        if (arg >= manager.seuil) {
+            // Retirer le coût du manager de l'argent possédé par le joueur
+            world.money = arg - manager.seuil;
+            // Positionner la propriété unlocked du manager à vrai
+            manager.unlocked = true;
+            // Trouver le produit associé au manager
+            const product = world.products.find((p) => p.id === manager.idcible);
+            if (product) {
+                // Positionner la propriété managerUnlocked du produit à vrai
+                product.managerUnlocked = true;
+
+            }
+        }
     }
 
+    function onClose(){
+        setIsManagerOpen(!isManagerOpen)
+    }
 
     return (
         <div className="main-container">
@@ -73,37 +86,12 @@ export default function Main({ loadworld, username }: MainProps) {
                 <span className="money-value"><span dangerouslySetInnerHTML={{__html: transform(world.money)}}/>$</span>
             </div>
             <div className="left-panel">
-                <button onClick={openManager}>Managers</button>
-                <div> {isManagerOpen &&
-                    <div className="modal">
-                        <div>
-                            <h1 className="title">Managers make you feel better !</h1>
-                        </div>
-                        <div>
-                            world.managers.pallier.filter( manager => !manager.unlocked).map(
-                            manager =>
-                            <div key={managers.idcible} className="managergrid">
-                                <div>
-                                    <div className="logo">
-                                        <img alt="manager logo" className="round" src={
-                                            this.props.services.server + managers.logo}/>
-                                    </div>
-                                </div>
-                                <div className="infosmanager">
-                                    <div className="managername"> {managers.name} </div>
-                                    <div className="managercible"> {
-                                        this.props.world.products.product[managers.idcible - 1].name} </div>
-                                    <div className="managercost"> {managers.seuil} </div>
-                                </div>
-                                <div onClick={() => this.hireManager(managers)}>
-                                    <Button disabled={this.props.world.money < managers.seuil}>
-                                        Hire !</Button>
-                                </div>
-                            </div>
-                            )
-                            <button className="closebutton" (click)="showManagers =
-                            !showManagers">Close
-                        </button>
+                <button onClick={() => setIsManagerOpen(!isManagerOpen)}>Managers</button>
+                <ManagersComponent showManagers={isManagerOpen}
+                                   onHireManager={onHireManager}
+                                   world={world}
+                                   managers={world.managers[0]}
+                                   onClose={onClose}/>
             </div>
             <button className="multi" onClick={() =>{
                 switch(qtmulti) {

@@ -4,6 +4,7 @@ import {useState, useEffect, useRef} from "react";
 import MyProgressbar, { Orientation } from "./MyProgressbar";
 import {useInterval} from './MyInterval';
 import {transform} from "./utils";
+import managers from "./Managers";
 
 type ProductProps = {
     product: Product;
@@ -22,20 +23,31 @@ function ProductComponent({ product, onProductionDone,onProductBuy, qtmulti, mon
         lastUpdate.current = Date.now();
         setTimeLeft(product.vitesse);
     };
-    function calcScore(){
+    function calcScore() {
         let end = Date.now() - lastUpdate.current;
         lastUpdate.current = Date.now();
-        if(timeLeft==0){}
-        if(timeLeft!==0){
-            if(end>=timeLeft){
-                setTimeLeft(0);
-                onProductionDone(product );
+
+        if (product.managerUnlocked) {
+            setTimeLeft(product.vitesse);
+            if (timeLeft === 0) {
+                return;
             }
-            else{
+            if (end >= timeLeft) {
+                setTimeLeft(0);
+                onProductionDone(product);
+            } else {
                 setTimeLeft(timeLeft - end);
             }
+        }else{
+        if (timeLeft === 0) {
+            return;
         }
-
+        if (end >= timeLeft) {
+            setTimeLeft(0);
+            onProductionDone(product);
+        } else {
+            setTimeLeft(timeLeft - end);
+        }}
     }
 
     useInterval(() => calcScore(), 100)
@@ -85,7 +97,7 @@ function ProductComponent({ product, onProductionDone,onProductBuy, qtmulti, mon
             <img className="product-image" src={"http://localhost:4000/" + product.logo} onClick={startFabrication} alt={product.name} />
             <p className="product-description">{product.quantite}</p>
             <div className="product-price">
-                <span dangerouslySetInnerHTML={{__html: transform(product.revenu*product.croissance)}}></span>$
+                <span dangerouslySetInnerHTML={{__html: transform(product.revenu*product.quantite)}}></span>$
             </div>
             <MyProgressbar className="barstyle"
                            vitesse={product.vitesse}
@@ -101,7 +113,7 @@ function ProductComponent({ product, onProductionDone,onProductBuy, qtmulti, mon
                     onClick={handleBuyProduct}
                     id={"handleBuyProduct" + product.id.toString()}>
                 Buy {qtmulti} for :
-                <span dangerouslySetInnerHTML={{__html: transform( product.cout )}}></span>$
+                <span dangerouslySetInnerHTML={{__html: transform(product.cout)}}></span>$
             </button>
         </div>
     );
