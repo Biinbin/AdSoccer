@@ -7,6 +7,8 @@ import {transform} from "./utils";
 import ManagersComponent from "./Managers";
 import AllUnlocksComponent from "./AllUnlocks";
 import {gql, useMutation} from "@apollo/client";
+import managers from "./Managers";
+import UpgradesComponent from "./Upgrades";
 
 type MainProps = {
     loadworld: World;
@@ -24,7 +26,35 @@ export default function Main({ loadworld, username }: MainProps) {
              quantite
              }
          }`;
+    const ENGAGER_MANAGER = gql`
+         mutation engagerManager($name: String!) {
+            engagerManager(name: $name) {
+                name
+             }
+         }`;
+    const ACHETER_CASH_UPGRADES = gql`
+         mutation acheterCashUpgrade($name: String!) {
+            acheterCashUpgrade(name: $name) {
+                name
+             }
+         }`;
+
     const [acheterQtProduit] = useMutation(ACHETER_QT_PRODUIT,
+        { context: { headers: { "x-user": username }},
+            onError: (error): void => {
+                console.log(error);
+            }
+        }
+    )
+
+    const [engagerManager] = useMutation(ENGAGER_MANAGER,
+        { context: { headers: { "x-user": username }},
+            onError: (error): void => {
+                console.log(error);
+            }
+        }
+    )
+    const [acheterCashUpgrade] = useMutation(ACHETER_CASH_UPGRADES,
         { context: { headers: { "x-user": username }},
             onError: (error): void => {
                 console.log(error);
@@ -51,7 +81,7 @@ export default function Main({ loadworld, username }: MainProps) {
         product.cout=product.cout*Math.pow(product.croissance, quantity)
         world.money = world.money - prix
         setWorld(prevWorld => ({...prevWorld, money: prevWorld.money}));
-        acheterQtProduit({ variables: { id: product.id , quantite : quantity} });
+        //acheterQtProduit({ variables: { id: product.id , quantite : product.quantite} });
     }
 
     //calcule le prix du produit en fonction de sa quantité et de sa croissance
@@ -65,6 +95,8 @@ export default function Main({ loadworld, username }: MainProps) {
     const [qtmulti, setQtmulti] = useState("x1");
     const [isManagerOpen, setIsManagerOpen] = useState(false);
     const [isAllUnloksOpen, setIsAllUnloksOpen] = useState(false);
+    const [isUpgradesOpen, setIsUpgradesOpen] = useState(false);
+
 
 
     function onHireManager(manager: Pallier): void{
@@ -79,6 +111,7 @@ export default function Main({ loadworld, username }: MainProps) {
             if (product) {
                 // Positionner la propriété managerUnlocked du produit à vrai
                 product.managerUnlocked = true;
+                engagerManager({ variables: { name : manager.name} });
             }
         }
     }
@@ -89,6 +122,27 @@ export default function Main({ loadworld, username }: MainProps) {
 
     function onCloseAllUnloks(){
         setIsAllUnloksOpen(!isAllUnloksOpen)
+    }
+
+    function onHireUpgrades(upgrades: Pallier): void{
+        let arg = world.money
+        if (arg >= upgrades.seuil) {
+            // Retirer le coût de l'upgrades de l'argent possédé par le joueur
+            world.money = arg - upgrades.seuil;
+            // Positionner la propriété unlocked de l'upgrades à vrai
+            upgrades.unlocked = true;
+            // Trouver le produit associé à l'upgrades
+            const product = world.products.find((p) => p.id === upgrades.idcible);
+            if (product) {
+                // Positionner la propriété managerUnlocked du produit à vrai
+                product.cout = product.cout/2;
+                acheterCashUpgrade({ variables: { name : upgrades.name} });
+            }
+        }
+    }
+
+    function onCloseUpgrades(){
+        setIsUpgradesOpen(!isUpgradesOpen)
     }
 
     return (
@@ -141,7 +195,11 @@ export default function Main({ loadworld, username }: MainProps) {
                     <button className="button-Angels">Angels</button>
                 </div>
                 <div>
-                    <button className="button-Upgrades">Upgrades</button>
+                    <button className="button-Upgrades" onClick={() => setIsUpgradesOpen(!isUpgradesOpen)}>Upgrades</button>
+                    <UpgradesComponent showUpgrades={isUpgradesOpen}
+                                       onHireUpgrades={onHireUpgrades}
+                                       world={world}
+                                       onCloseUpgrades={onCloseUpgrades}/>
                 </div>
             </div>
             <div className="product-grid">
