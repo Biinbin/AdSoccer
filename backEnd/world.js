@@ -301,6 +301,24 @@ module.exports = {
             "ratio": 3,
             "typeratio": "gain",
             "unlocked": false
+        },
+        {
+            "name": "Paris Saint-Germain",
+            "logo": "public/premierupgrade.jpg",
+            "seuil": 1e3,
+            "idcible": 3,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Paris Saint-Germain",
+            "logo": "public/premierupgrade.jpg",
+            "seuil": 2e3,
+            "idcible": 3,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
         },],
     "angelupgrades": [
         {
