@@ -254,12 +254,56 @@ module.exports = {
                 }
             ]
         },],
-
     "allunlocks": [
         {
-            "name": "Nom du premier unlock général",
+            "name": "Coupe de france",
+            "logo": "public/premierunlock.jpg",
+            "seuil": 10,
+            "idcible": 0,
+            "ratio": 2,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Ligue 1",
+            "logo": "public/premierunlock.jpg",
+            "seuil": 20,
+            "idcible": 0,
+            "ratio": 2,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Champions League",
             "logo": "public/premierunlock.jpg",
             "seuil": 30,
+            "idcible": 0,
+            "ratio": 2,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "UEFA Euro",
+            "logo": "public/premierunlock.jpg",
+            "seuil": 40,
+            "idcible": 0,
+            "ratio": 2,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Ballon d'or",
+            "logo": "public/premierunlock.jpg",
+            "seuil": 50,
+            "idcible": 0,
+            "ratio": 2,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Coupe du monde",
+            "logo": "public/premierunlock.jpg",
+            "seuil": 60,
             "idcible": 0,
             "ratio": 2,
             "typeratio": "gain",
@@ -268,7 +312,7 @@ module.exports = {
     "upgrades": [
         {
             "name": "Montpelier",
-            "logo": "public/montpelier.jpg",
+            "logo": "icones/montpelier.png",
             "seuil": 1e3,
             "idcible": 1,
             "ratio": 3,
@@ -277,7 +321,7 @@ module.exports = {
         },
         {
             "name": "Chelsea",
-            "logo": "public/chelsea.jpg",
+            "logo": "icones/chelsea.png",
             "seuil": 2e3,
             "idcible": 1,
             "ratio": 3,
@@ -286,7 +330,7 @@ module.exports = {
         },
         {
             "name": "Monaco",
-            "logo": "public/premierupgrade.jpg",
+            "logo": "icones/monaco.png",
             "seuil": 1e3,
             "idcible": 2,
             "ratio": 3,
@@ -295,7 +339,7 @@ module.exports = {
         },
         {
             "name": "Paris Saint-Germain",
-            "logo": "public/premierupgrade.jpg",
+            "logo": "icones/psg.png",
             "seuil": 2e3,
             "idcible": 2,
             "ratio": 3,
@@ -303,8 +347,8 @@ module.exports = {
             "unlocked": false
         },
         {
-            "name": "Paris Saint-Germain",
-            "logo": "public/premierupgrade.jpg",
+            "name": "Monaco",
+            "logo": "icones/monaco.png",
             "seuil": 1e3,
             "idcible": 3,
             "ratio": 3,
@@ -312,19 +356,91 @@ module.exports = {
             "unlocked": false
         },
         {
-            "name": "Paris Saint-Germain",
-            "logo": "public/premierupgrade.jpg",
+            "name": "Arsenal",
+            "logo": "icones/arsenal.png",
             "seuil": 2e3,
             "idcible": 3,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Juventus",
+            "logo": "icones/juventus.png",
+            "seuil": 1e3,
+            "idcible": 4,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Real Madrid",
+            "logo": "icones/realmadrid.png",
+            "seuil": 2e3,
+            "idcible": 4,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Saint-Etienne",
+            "logo": "icones/se.png",
+            "seuil": 1e3,
+            "idcible": 5,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Juventus",
+            "logo": "icones/juventus.png",
+            "seuil": 2e3,
+            "idcible": 5,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Nice",
+            "logo": "icones/nice.png",
+            "seuil": 1e3,
+            "idcible": 6,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Reims",
+            "logo": "icones/reims.png",
+            "seuil": 2e3,
+            "idcible": 6,
             "ratio": 3,
             "typeratio": "gain",
             "unlocked": false
         },],
     "angelupgrades": [
         {
-            "name": "Angel Sacrifice",
-            "logo": "public/angel.png",
+            "name": "Ballon Puma",
+            "logo": "icones/ballonPuma.png",
             "seuil": 10,
+            "idcible": -1,
+            "ratio": 3,
+            "typeratio": "ange",
+            "unlocked": false
+        },
+        {
+            "name": "Ballon Adidas",
+            "logo": "icones/ballonAdidas.png",
+            "seuil": 50,
+            "idcible": -1,
+            "ratio": 3,
+            "typeratio": "ange",
+            "unlocked": false
+        },
+        {
+            "name": "Ballon Nike",
+            "logo": "icones/ballonNike.png",
+            "seuil": 100,
             "idcible": -1,
             "ratio": 3,
             "typeratio": "ange",
