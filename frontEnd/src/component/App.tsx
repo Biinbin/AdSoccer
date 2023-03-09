@@ -96,7 +96,7 @@ function App() {
     else main=<div> <Main loadworld={data.getWorld} username={username}/> </div>;
 
     return (
-        <div>
+        <div className="appli">
         <div className="username" >
             <div> Your ID :</div>
             <input type="text" value={username} onChange={onUserNameChanged} />

@@ -24,10 +24,9 @@
     border: 1px solid #ccc;
 }
 
-.round {
+.allUnloksImg {
     width: 150px;
     height: 150px;
     object-fit: cover;
-    border-radius: 50%;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 }

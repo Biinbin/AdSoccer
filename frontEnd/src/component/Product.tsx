@@ -5,6 +5,7 @@ import MyProgressbar, { Orientation } from "./MyProgressbar";
 import {useInterval} from './MyInterval';
 import {transform} from "./utils";
 import managers from "./Managers";
+import {gql, useMutation} from "@apollo/client";
 
 type ProductProps = {
     product: Product;
@@ -12,16 +13,31 @@ type ProductProps = {
     onProductBuy: (quantity: number, product: Product) => void;
     qtmulti: string;
     money: number;
+    username : string;
 };
 
-function ProductComponent({ product, onProductionDone,onProductBuy, qtmulti, money}: ProductProps) {
+
+function ProductComponent({ product, onProductionDone,onProductBuy, qtmulti, money, username}: ProductProps) {
     const [timeLeft, setTimeLeft] = useState(product.timeleft);
     const lastUpdate = useRef(Date.now());
     const [maxBuyable, setMaxBuyable] = useState(0);
-
+    const LANCER_PRODUCTION = gql`
+         mutation lancerProductionProduit($id: Int!) {
+            lancerProductionProduit(id: $id) {
+             id
+             }
+         }`
+    const [lancerProduction] = useMutation(LANCER_PRODUCTION,
+        { context: { headers: { "x-user": username }},
+            onError: (error): void => {
+                console.log(error);
+            }
+        }
+    )
     function startFabrication () {
         lastUpdate.current = Date.now();
         setTimeLeft(product.vitesse);
+        lancerProduction({ variables: { id: product.id } });
     };
     function calcScore() {
         let end = Date.now() - lastUpdate.current;
@@ -39,7 +55,7 @@ function ProductComponent({ product, onProductionDone,onProductBuy, qtmulti, mon
                 setTimeLeft(timeLeft - end);
             }
         }else{
-        if (timeLeft === 0) {
+            if (timeLeft === 0) {
             return;
         }
         if (end >= timeLeft) {

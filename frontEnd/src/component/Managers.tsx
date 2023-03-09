@@ -6,13 +6,12 @@ import "../style/Managers.css"
 
 type ManagersProps = {
     showManagers: boolean;
-    managers : Pallier;
     world: World;
     onHireManager : (manager: Pallier) => void;
     onClose : () => void;
 
 }
-function ManagersComponent({ showManagers, managers, world, onHireManager, onClose}: ManagersProps) {
+function ManagersComponent({ showManagers, world, onHireManager, onClose}: ManagersProps) {
 
     const [State, setState] = useState(showManagers);
 
@@ -34,7 +33,7 @@ function ManagersComponent({ showManagers, managers, world, onHireManager, onClo
             {showManagers &&
                 <div className="modal">
                     <div>
-                        <h1 className="title">Managers make you feel better !</h1>
+                        <h1 className="title">Managers</h1>
                     </div>
                     <div>
                         { world.managers.filter(managers => !managers.unlocked).map(
