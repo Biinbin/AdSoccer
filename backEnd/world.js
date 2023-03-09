@@ -5,13 +5,13 @@ module.exports = {
     "score": 0,
     "totalangels": 0,
     "activeangels": 0,
-    "angelbonus": 2,
+    "angelbonus": 0,
     "lastupdate": 0,
     "products": [
         {
             "id": 1,
             "name": "Olivier Giroud",
-            "logo": "icones/giroudCarte.png",
+            "logo": "icones/olivierGiroud.png",
             "cout": 4,
             "croissance": 1.07,
             "revenu": 1,
@@ -52,7 +52,7 @@ module.exports = {
         {
             "id": 2,
             "name": "Kylian Mbappé",
-            "logo": "icones/mbappeCarteFinale.png",
+            "logo": "icones/km.png",
             "cout": 60,
             "croissance": 1.15,
             "revenu": 60,
@@ -93,7 +93,7 @@ module.exports = {
         {
             "id": 3,
             "name": "Thierry Henry",
-            "logo": "icones/Henry.png",
+            "logo": "icones/titi.png",
             "cout": 120,
             "croissance": 1.14,
             "revenu": 100,
@@ -134,7 +134,7 @@ module.exports = {
         {
             "id": 4,
             "name": "Zinédine Zidane",
-            "logo": "icones/zzCarteFinale.png",
+            "logo": "icones/zz.png",
             "cout": 240,
             "croissance": 1.13,
             "revenu": 200,
@@ -175,7 +175,7 @@ module.exports = {
         {
             "id": 5,
             "name": "Just Fontaine",
-            "logo": "icones/justFontaineCarteFinale.png",
+            "logo": "icones/jf.png",
             "cout": 480,
             "croissance": 1.12,
             "revenu": 400,
@@ -216,7 +216,7 @@ module.exports = {
         {
             "id": 6,
             "name": "Michel Platini",
-            "logo": "icones/platini-carte-finale.png",
+            "logo": "icones/mp.png",
             "cout": 960,
             "croissance": 1.11,
             "revenu": 900,
@@ -267,9 +267,18 @@ module.exports = {
         },],
     "upgrades": [
         {
-            "name": "Nom du premier upgrade",
+            "name": "Olivier Focus",
             "logo": "public/premierupgrade.jpg",
             "seuil": 1e3,
+            "idcible": 1,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Nom du premier upgrade",
+            "logo": "public/premierupgrade.jpg",
+            "seuil": 2e3,
             "idcible": 1,
             "ratio": 3,
             "typeratio": "gain",
@@ -288,8 +297,8 @@ module.exports = {
     ],
     "managers": [
         {
-            "name": "Wangari Maathai",
-            "logo": "public/WangariMaathai.jpg",
+            "name": "Arsène Wenger",
+            "logo": "icones/arseneWenger.png",
             "seuil": 10,
             "idcible": 1,
             "ratio": 0,
@@ -297,8 +306,8 @@ module.exports = {
             "unlocked": false
         },
         {
-            "name": "Wangari Maathai",
-            "logo": "public/WangariMaathai.jpg",
+            "name": "Didier Deschamps",
+            "logo": "icones/didierDeschamps.png",
             "seuil": 10,
             "idcible": 2,
             "ratio": 0,
@@ -306,8 +315,8 @@ module.exports = {
             "unlocked": false
         },
         {
-            "name": "Wangari Maathai",
-            "logo": "public/WangariMaathai.jpg",
+            "name": "Pep Guardiola",
+            "logo": "icones/pepGuardiola",
             "seuil": 10,
             "idcible": 3,
             "ratio": 0,
@@ -315,8 +324,8 @@ module.exports = {
             "unlocked": false
         },
         {
-            "name": "Wangari Maathai",
-            "logo": "public/WangariMaathai.jpg",
+            "name": "Aimé Jacquet",
+            "logo": "icones/Photo-Jacquet",
             "seuil": 10,
             "idcible": 4,
             "ratio": 0,
@@ -324,8 +333,8 @@ module.exports = {
             "unlocked": false
         },
         {
-            "name": "Wangari Maathai",
-            "logo": "public/WangariMaathai.jpg",
+            "name": "Jürgen Klopp",
+            "logo": "icones/jurgen-klopp.png",
             "seuil": 10,
             "idcible": 5,
             "ratio": 0,
@@ -333,8 +342,8 @@ module.exports = {
             "unlocked": false
         },
         {
-            "name": "Wangari Maathai",
-            "logo": "public/WangariMaathai.jpg",
+            "name": "Carlo Ancelotti",
+            "logo": "icones/carloAncelotti",
             "seuil": 10,
             "idcible": 6,
             "ratio": 0,
