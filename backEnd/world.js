@@ -257,7 +257,7 @@ module.exports = {
     "allunlocks": [
         {
             "name": "Coupe de france",
-            "logo": "public/premierunlock.jpg",
+            "logo": "icones/coupeDeFrance.png",
             "seuil": 10,
             "idcible": 0,
             "ratio": 2,
@@ -266,7 +266,7 @@ module.exports = {
         },
         {
             "name": "Ligue 1",
-            "logo": "public/premierunlock.jpg",
+            "logo": "icones/ligue1.png",
             "seuil": 20,
             "idcible": 0,
             "ratio": 2,
@@ -275,7 +275,7 @@ module.exports = {
         },
         {
             "name": "Champions League",
-            "logo": "public/premierunlock.jpg",
+            "logo": "icones/championsLeague.png",
             "seuil": 30,
             "idcible": 0,
             "ratio": 2,
@@ -284,7 +284,7 @@ module.exports = {
         },
         {
             "name": "UEFA Euro",
-            "logo": "public/premierunlock.jpg",
+            "logo": "icones/uefaEuro.png",
             "seuil": 40,
             "idcible": 0,
             "ratio": 2,
@@ -293,7 +293,7 @@ module.exports = {
         },
         {
             "name": "Ballon d'or",
-            "logo": "public/premierunlock.jpg",
+            "logo": "icones/ballonDor.png",
             "seuil": 50,
             "idcible": 0,
             "ratio": 2,
@@ -302,7 +302,7 @@ module.exports = {
         },
         {
             "name": "Coupe du monde",
-            "logo": "public/premierunlock.jpg",
+            "logo": "icones/coupeDuMonde.png",
             "seuil": 60,
             "idcible": 0,
             "ratio": 2,
