@@ -93,7 +93,7 @@ function App() {
     let main = undefined;
     if (loading) corps = <div> Loading... </div>;
     else if (error) corps = <div> Erreur de chargement du monde ! </div>;
-    else main=<div> <Main loadworld={data.getWorld} username={username} products={data.products}/> </div>;
+    else main=<div> <Main loadworld={data.getWorld} username={username}/> </div>;
 
     return (
         <div className="appli">

@@ -7,17 +7,14 @@ import {transform} from "./utils";
 import ManagersComponent from "./Managers";
 import AllUnlocksComponent from "./AllUnlocks";
 import {gql, useMutation} from "@apollo/client";
-import managers from "./Managers";
 import UpgradesComponent from "./Upgrades";
-import product from "./Product";
 
 type MainProps = {
     loadworld: World;
     username: string;
-    products : Product;
 };
 
-export default function Main({ loadworld, username, products }: MainProps) {
+export default function Main({ loadworld, username}: MainProps) {
     const [world, setWorld] = useState(
         JSON.parse(JSON.stringify(loadworld)) as World
     );
@@ -126,8 +123,8 @@ export default function Main({ loadworld, username, products }: MainProps) {
         setIsAllUnlocksOpen(!isAllUnlocksOpen)
     }
     function onAllUnlocks(allunlocks: Pallier): void{
-        let qt = products.quantite
-        if (qt >= allunlocks.seuil) {
+        let arg = world.money
+        if (arg >= allunlocks.seuil) {
             // Positionner la propriété unlocked de l'upgrades à vrai
             allunlocks.unlocked = true;
             console.log(allunlocks.unlocked)
