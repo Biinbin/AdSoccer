@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
-import {World} from "../world";
+import {Pallier, World} from "../world";
 import "../style/AllUnlocks.css"
 
 
 type AllUnloksProps = {
     showAllUnloks: boolean;
     world: World;
-    onCloseAllUnloks : () => void;
+    onAllUnlocks: (allUnlocks: Pallier) => void;
+    onCloseAllUnloks: () => void;
 
 }
 function AllUnlocksComponent({ showAllUnloks, world, onCloseAllUnloks}: AllUnloksProps) {

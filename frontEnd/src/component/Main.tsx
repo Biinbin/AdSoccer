@@ -217,10 +217,10 @@ export default function Main({ loadworld, username, products }: MainProps) {
                 </div>
                 <div>
                     <button className="button-AllUnlocks" onClick={() => setIsAllUnlocksOpen(!isAllUnlocksOpen)}>Unlocks</button>
-                    <AllUnlocksComponent showAllUnlocks={isAllUnlocksOpen}
+                    <AllUnlocksComponent showAllUnloks={isAllUnlocksOpen}
                                          onAllUnlocks={onAllUnlocks}
                                          world={world}
-                                         onCloseAllUnlocks={onCloseAllUnlocks}/>
+                                         onCloseAllUnloks={onCloseAllUnlocks}/>
                 </div>
                 <div>
                     <button className="button-Angels">Angels</button>
