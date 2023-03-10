@@ -9,13 +9,15 @@ import AllUnlocksComponent from "./AllUnlocks";
 import {gql, useMutation} from "@apollo/client";
 import managers from "./Managers";
 import UpgradesComponent from "./Upgrades";
+import product from "./Product";
 
 type MainProps = {
     loadworld: World;
     username: string;
+    products : Product;
 };
 
-export default function Main({ loadworld, username }: MainProps) {
+export default function Main({ loadworld, username, products }: MainProps) {
     const [world, setWorld] = useState(
         JSON.parse(JSON.stringify(loadworld)) as World
     );
@@ -81,7 +83,7 @@ export default function Main({ loadworld, username }: MainProps) {
         product.cout=product.cout*Math.pow(product.croissance, quantity)
         world.money = world.money - prix
         setWorld(prevWorld => ({...prevWorld, money: prevWorld.money}));
-        //acheterQtProduit({ variables: { id: product.id , quantite : product.quantite} });
+        //acheterQtProduit({ variables: { id: product.id , quantite : quantity} });
     }
 
     //calcule le prix du produit en fonction de sa quantité et de sa croissance
@@ -94,7 +96,7 @@ export default function Main({ loadworld, username }: MainProps) {
 
     const [qtmulti, setQtmulti] = useState("x1");
     const [isManagerOpen, setIsManagerOpen] = useState(false);
-    const [isAllUnloksOpen, setIsAllUnloksOpen] = useState(false);
+    const [isAllUnlocksOpen, setIsAllUnlocksOpen] = useState(false);
     const [isUpgradesOpen, setIsUpgradesOpen] = useState(false);
 
 
@@ -120,8 +122,32 @@ export default function Main({ loadworld, username }: MainProps) {
         setIsManagerOpen(!isManagerOpen)
     }
 
-    function onCloseAllUnloks(){
-        setIsAllUnloksOpen(!isAllUnloksOpen)
+    function onCloseAllUnlocks(){
+        setIsAllUnlocksOpen(!isAllUnlocksOpen)
+    }
+    function onAllUnlocks(allunlocks: Pallier): void{
+        let qt = products.quantite
+        if (qt >= allunlocks.seuil) {
+            // Positionner la propriété unlocked de l'upgrades à vrai
+            allunlocks.unlocked = true;
+            console.log(allunlocks.unlocked)
+            // Trouver le produit associé à l'upgrades
+            const product = world.products.find((p) => p.id === allunlocks.idcible);
+            if (product) {
+                // Trouver le pallier associé à l'upgrades
+                const pallier = product.paliers.find((p) => p.typeratio === allunlocks.typeratio)
+                if (pallier) {
+                if(allunlocks.typeratio=="gain"){
+                    const pallier = product.paliers.find((p) => p.typeratio === allunlocks.typeratio)
+                    product.revenu= product.revenu*allunlocks.ratio;
+                    console.log(product.revenu)
+                }if(allunlocks.typeratio=="vitesse"){
+                    product.timeleft= product.timeleft/allunlocks.ratio;
+                    console.log(product.timeleft)
+                }}
+                acheterCashUpgrade({ variables: { name : allunlocks.name} });
+            }
+        }
     }
 
     function onHireUpgrades(upgrades: Pallier): void{
@@ -135,7 +161,11 @@ export default function Main({ loadworld, username }: MainProps) {
             const product = world.products.find((p) => p.id === upgrades.idcible);
             if (product) {
                 // Positionner la propriété managerUnlocked du produit à vrai
-                product.cout = product.cout/2;
+                if(upgrades.typeratio=="gain"){
+                    product.revenu= product.revenu*upgrades.ratio;
+                }else{
+                    product.vitesse= product.vitesse*upgrades.ratio;
+                }
                 acheterCashUpgrade({ variables: { name : upgrades.name} });
             }
         }
@@ -186,10 +216,11 @@ export default function Main({ loadworld, username }: MainProps) {
                                        onClose={onClose}/>
                 </div>
                 <div>
-                    <button className="button-AllUnlocks" onClick={() => setIsAllUnloksOpen(!isAllUnloksOpen)}>Unlocks</button>
-                    <AllUnlocksComponent showAllUnloks={isAllUnloksOpen}
+                    <button className="button-AllUnlocks" onClick={() => setIsAllUnlocksOpen(!isAllUnlocksOpen)}>Unlocks</button>
+                    <AllUnlocksComponent showAllUnlocks={isAllUnlocksOpen}
+                                         onAllUnlocks={onAllUnlocks}
                                          world={world}
-                                         onCloseAllUnloks={onCloseAllUnloks}/>
+                                         onCloseAllUnlocks={onCloseAllUnlocks}/>
                 </div>
                 <div>
                     <button className="button-Angels">Angels</button>
