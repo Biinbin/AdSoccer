@@ -6,6 +6,7 @@ import {useInterval} from './MyInterval';
 import {transform} from "./utils";
 import managers from "./Managers";
 import {gql, useMutation} from "@apollo/client";
+import {switchClasses} from "@mui/material";
 
 type ProductProps = {
     product: Product;
@@ -96,8 +97,9 @@ function ProductComponent({ product, onProductionDone,onProductBuy, qtmulti, mon
                     onProductBuy(qtmultInt, product);
                 }
                 break;
-            case "Max" :
-                if (canBuy > 0) {
+            case "MAX" :
+                //  console.log(qtmulti)
+                if (canBuy >= 1) {
                     onProductBuy(canBuy, product);
                 }
                 break;

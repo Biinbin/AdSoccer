@@ -126,7 +126,6 @@ export default function Main({ loadworld, username, products }: MainProps) {
     function onCloseAllUnlocks(){
         setIsAllUnlocksOpen(!isAllUnlocksOpen)
     }
-
     function onAllUnlocks(allunlocks: Pallier): void{
         let qt = products.quantite
         if (qt >= allunlocks.seuil) {
@@ -137,10 +136,10 @@ export default function Main({ loadworld, username, products }: MainProps) {
             const product = world.products.find((p) => p.id === allunlocks.idcible);
             if (product) {
                 // Trouver le pallier associé à l'upgrades
-                const pallier = product.palliers.find((p) => p.typeratio === allunlocks.typeratio)
+                const pallier = product.paliers.find((p) => p.typeratio === allunlocks.typeratio)
                 if (pallier) {
                 if(allunlocks.typeratio=="gain"){
-                    const pallier = product.palliers.find((p) => p.typeratio === allunlocks.typeratio)
+                    const pallier = product.paliers.find((p) => p.typeratio === allunlocks.typeratio)
                     product.revenu= product.revenu*allunlocks.ratio;
                     console.log(product.revenu)
                 }if(allunlocks.typeratio=="vitesse"){
@@ -219,7 +218,6 @@ export default function Main({ loadworld, username, products }: MainProps) {
                 </div>
                 <div>
                     <button className="button-AllUnlocks" onClick={() => setIsAllUnlocksOpen(!isAllUnlocksOpen)}>Unlocks</button>
-
                     <AllUnlocksComponent showAllUnloks={isAllUnlocksOpen}
                                          onAllUnlocks={onAllUnlocks}
                                          world={world}
