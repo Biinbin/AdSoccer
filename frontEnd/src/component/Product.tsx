@@ -83,6 +83,9 @@ function ProductComponent({ product, onProductionDone,onProductBuy, qtmulti, mon
     }
     function handleBuyProduct() {
         const canBuy = calcMaxCanBuy();
+        console.log(money)
+        console.log(product.cout)
+        console.log(money < product.cout)
         switch (qtmulti) {
             case "x1" :
             case "x10" :
@@ -127,7 +130,8 @@ function ProductComponent({ product, onProductionDone,onProductBuy, qtmulti, mon
             <p>Time left: {timeLeft}s</p>
             <button className="product-buy-button"
                     onClick={handleBuyProduct}
-                    id={"handleBuyProduct" + product.id.toString()}>
+                    id={"handleBuyProduct" + product.id.toString()}
+                    disabled={money < product.cout}>
                 Buy {qtmulti} for :
                 <span dangerouslySetInnerHTML={{__html: transform(product.cout)}}></span>$
             </button>

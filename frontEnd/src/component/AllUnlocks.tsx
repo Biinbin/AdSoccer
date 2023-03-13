@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {Pallier, World} from "../world";
 import "../style/AllUnlocks.css"
+import "../style/Paliers.css"
+import allUnlocks from "./AllUnlocks";
 
 
 type AllUnloksProps = {
@@ -25,6 +27,33 @@ function AllUnlocksComponent({ showAllUnloks, world, onCloseAllUnloks}: AllUnlok
             {showAllUnloks &&
                 <div className="modal">
                     <div>
+                        <h1 className="title">Paliers</h1>
+                    </div>
+                    <div>
+                        {world.products.map(products =>
+                            <div key={products.id} className="paliersGrid">
+                                <div>
+                                    <div className="productName">
+                                        <h1>{products.name}</h1>
+                                    </div>
+                                        {products.palliers.map(palier => (!palier.unlocked &&
+                                            <div>
+                                                <div>
+                                                    <img alt="palier logo" className="paliersImg" src={"http://localhost:4000/" + palier.logo}/>
+                                                    <h2>{palier.name}</h2>
+                                                </div>
+                                                <div className="infosPaliers">
+                                                    <div className="paliersName">{palier.seuil}</div>
+                                                    <div className="paliersRatio" >{palier.typeratio} x{palier.ratio}</div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                </div>
+                            </div>
+                        )
+                        }
+                    </div>
+                    <div>
                         <h1 className="title">AllUnloks</h1>
                     </div>
                     <div>
@@ -43,7 +72,8 @@ function AllUnlocksComponent({ showAllUnloks, world, onCloseAllUnloks}: AllUnlok
                                 </div>
                         )
                         }
-                        <button className="closebutton" onClick={toggleAllUnloks}>Close</button>
+                        <button className="closebutton"
+                                onClick={toggleAllUnloks}> Close</button>
                     </div>
                 </div>
             }

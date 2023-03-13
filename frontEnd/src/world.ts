@@ -35,10 +35,10 @@ export class Product {
     timeleft: number = 0
     lastupdate: number = 0
     managerUnlocked: boolean = false
-    paliers : Pallier[]
+    palliers : Pallier[]
 
     constructor() {
-        this.paliers = []
+        this.palliers = []
     }
 }
 
