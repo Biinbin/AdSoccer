@@ -383,28 +383,10 @@ module.exports = {
             "unlocked": false
         },
         {
-            "name": "Saint-Etienne",
-            "logo": "icones/se.png",
-            "seuil": 1e3,
-            "idcible": 5,
-            "ratio": 3,
-            "typeratio": "gain",
-            "unlocked": false
-        },
-        {
-            "name": "Juventus ",
-            "logo": "icones/juventus.png",
-            "seuil": 2e3,
-            "idcible": 5,
-            "ratio": 3,
-            "typeratio": "gain",
-            "unlocked": false
-        },
-        {
             "name": "Nice",
             "logo": "icones/nice.png",
             "seuil": 1e3,
-            "idcible": 6,
+            "idcible": 5,
             "ratio": 3,
             "typeratio": "gain",
             "unlocked": false
@@ -412,6 +394,24 @@ module.exports = {
         {
             "name": "Reims",
             "logo": "icones/reims.png",
+            "seuil": 2e3,
+            "idcible": 5,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Saint-Etienne",
+            "logo": "icones/se.png",
+            "seuil": 1e3,
+            "idcible": 6,
+            "ratio": 3,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Juventus",
+            "logo": "icones/juventus.png",
             "seuil": 2e3,
             "idcible": 6,
             "ratio": 3,
