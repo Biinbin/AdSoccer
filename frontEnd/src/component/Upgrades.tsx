@@ -48,6 +48,7 @@ function UpgradesComponent({ showUpgrades, world, onHireUpgrades, onCloseUpgrade
                                         <div className="upgradesname">{upgrades.name}</div>
                                         <div className="upgradescible">{world.products[upgrades.idcible-1].name}</div>
                                         <div className="upgradescost">{upgrades.seuil}</div>
+                                        <div className="upgradesRatio">{upgrades.typeratio} x{upgrades.ratio}</div>
                                     </div>
                                     <div onClick={() => hireUpgrades(upgrades)}>
                                         <Button disabled={world.money < upgrades.seuil}>Cash Upgrades !</Button>

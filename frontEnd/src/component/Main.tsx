@@ -10,7 +10,6 @@ import {gql, useMutation} from "@apollo/client";
 import managers from "./Managers";
 import UpgradesComponent from "./Upgrades";
 import product from "./Product";
-import PaliersComponent from "./Paliers";
 
 type MainProps = {
     loadworld: World;
@@ -136,10 +135,10 @@ export default function Main({ loadworld, username, products }: MainProps) {
             const product = world.products.find((p) => p.id === allunlocks.idcible);
             if (product) {
                 // Trouver le pallier associé à l'upgrades
-                const pallier = product.paliers.find((p) => p.typeratio === allunlocks.typeratio)
+                const pallier = product.palliers.find((p) => p.typeratio === allunlocks.typeratio)
                 if (pallier) {
                 if(allunlocks.typeratio=="gain"){
-                    const pallier = product.paliers.find((p) => p.typeratio === allunlocks.typeratio)
+                    const pallier = product.palliers.find((p) => p.typeratio === allunlocks.typeratio)
                     product.revenu= product.revenu*allunlocks.ratio;
                     console.log(product.revenu)
                 }if(allunlocks.typeratio=="vitesse"){

@@ -68,6 +68,7 @@ function AllUnlocksComponent({ showAllUnloks, world, onCloseAllUnloks}: AllUnlok
                                     <div className="infosAllUnloks">
                                         <div className="allUnloksname">{allunlocks.name}</div>
                                         <div className="allUnlokscost">{allunlocks.seuil}</div>
+                                        <div className="allUnloksRatio">{allunlocks.typeratio} x{allunlocks.ratio}</div>
                                     </div>
                                 </div>
                         )
