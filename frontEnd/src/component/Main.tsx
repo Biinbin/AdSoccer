@@ -6,10 +6,12 @@ import ProductComponent from "./Product";
 import {transform} from "./utils";
 import ManagersComponent from "./Managers";
 import AllUnlocksComponent from "./AllUnlocks";
+import AngelsComponent from "./AngelsUpgrades";
 import {gql, useMutation} from "@apollo/client";
 import managers from "./Managers";
 import UpgradesComponent from "./Upgrades";
 import product from "./Product";
+import angelsUpgrades from "./AngelsUpgrades";
 
 type MainProps = {
     loadworld: World;
@@ -39,6 +41,20 @@ export default function Main({ loadworld, username}: MainProps) {
              }
          }`;
 
+    const ACHETER_ANGELS_UPGRADES = gql`
+         mutation acheterAngelUpgrade($name: String!) {
+            acheterAngelUpgrade(name: $name) {
+                name
+             }
+         }`;
+
+    const RESET_WORLD = gql`
+         mutation resetWorld($name: String!) {
+            resetWorld(name: $name) {
+            world
+             }
+         }`;
+
     const [acheterQtProduit] = useMutation(ACHETER_QT_PRODUIT,
         { context: { headers: { "x-user": username }},
             onError: (error): void => {
@@ -55,6 +71,22 @@ export default function Main({ loadworld, username}: MainProps) {
         }
     )
     const [acheterCashUpgrade] = useMutation(ACHETER_CASH_UPGRADES,
+        { context: { headers: { "x-user": username }},
+            onError: (error): void => {
+                console.log(error);
+            }
+        }
+    )
+
+    const [acheterAngelUpgrade] = useMutation(ACHETER_ANGELS_UPGRADES,
+        { context: { headers: { "x-user": username }},
+            onError: (error): void => {
+                console.log(error);
+            }
+        }
+    )
+
+    const [resetWorld] = useMutation(RESET_WORLD,
         { context: { headers: { "x-user": username }},
             onError: (error): void => {
                 console.log(error);
@@ -95,7 +127,9 @@ export default function Main({ loadworld, username}: MainProps) {
     const [qtmulti, setQtmulti] = useState("x1");
     const [isManagerOpen, setIsManagerOpen] = useState(false);
     const [isAllUnlocksOpen, setIsAllUnlocksOpen] = useState(false);
+    const [isAngelsOpen, setIsAngelsOpen] = useState(false);
     const [isUpgradesOpen, setIsUpgradesOpen] = useState(false);
+    const [isInvestorsOpen, setInvestorsOpen] = useState(false);
 
 
 
@@ -118,6 +152,10 @@ export default function Main({ loadworld, username}: MainProps) {
 
     function onClose(){
         setIsManagerOpen(!isManagerOpen)
+    }
+
+    function onCloseAngels(){
+        setIsAngelsOpen(!isAngelsOpen);
     }
 
     function onCloseAllUnlocks(){
@@ -166,6 +204,16 @@ export default function Main({ loadworld, username}: MainProps) {
                 }
                 acheterCashUpgrade({ variables: { name : upgrades.name} });
             }
+        }
+    }
+
+    function onBuyAngels (angels: Pallier): void{
+        let arg = world.activeangels
+        if (arg >= angels.seuil){
+            world.activeangels = arg - angels.seuil;
+            angels.unlocked = true;
+            world.angelbonus = angels.ratio + world.angelbonus
+            acheterAngelUpgrade({ variables: { name : angels.name} });
         }
     }
 
@@ -221,7 +269,11 @@ export default function Main({ loadworld, username}: MainProps) {
                                          onCloseAllUnloks={onCloseAllUnlocks}/>
                 </div>
                 <div>
-                    <button className="button-Angels">Angels</button>
+                    <button className="button-Angels" onClick={() => setIsAngelsOpen(!isAngelsOpen)}>Angels</button>
+                    <AngelsComponent     showAngels={isAngelsOpen}
+                                         onHireAngels={onBuyAngels}
+                                         world={world}
+                                         onCloseAngels={onCloseAngels}/>
                 </div>
                 <div>
                     <button className="button-Upgrades" onClick={() => setIsUpgradesOpen(!isUpgradesOpen)}>Upgrades</button>
@@ -229,6 +281,9 @@ export default function Main({ loadworld, username}: MainProps) {
                                        onHireUpgrades={onHireUpgrades}
                                        world={world}
                                        onCloseUpgrades={onCloseUpgrades}/>
+                </div>
+                <div>
+                    <button className="button-Upgrades" onClick={ () => resetWorld()}>Reset World</button>
                 </div>
             </div>
             <div className="product-grid">

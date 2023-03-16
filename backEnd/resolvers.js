@@ -63,9 +63,7 @@ function addBonus(bonus, context) {
             bonus.unlocked = true;
         }
     } else if (bonus.idcible == 0) {
-        console.log("coucou")
         if (bonus.typeratio === "vitesse") {
-            console.log("coucou2")
             world.products.forEach(p => {
                 Math.round(p.vitesse = p.vitesse / bonus.ratio);
             })
@@ -79,7 +77,7 @@ function addBonus(bonus, context) {
         }
     } else if (bonus.idcible == -1) {
         bonus.unlocked = true;
-        world.angelbonus = bonus.ratio * world.angelbonus
+        world.angelbonus = bonus.ratio + world.angelbonus
     }
 }
 
@@ -111,7 +109,6 @@ module.exports = {
 
                 let palierDebloques = produit.palliers.filter((p => p.unlocked === false && p.seuil < produit.quantite));
                 palierDebloques.forEach(p => {
-                    console.log("palliers")
                     addBonus(p, context);
                 })
 
@@ -126,7 +123,6 @@ module.exports = {
                         }
                     })
                     if (counter === nbTotal) {
-                        console.log("allunlocks")
                         addBonus(u, context)
                     }
                 })

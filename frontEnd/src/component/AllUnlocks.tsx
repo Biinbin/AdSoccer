@@ -3,6 +3,7 @@ import {Pallier, World} from "../world";
 import "../style/AllUnlocks.css"
 import "../style/Paliers.css"
 import allUnlocks from "./AllUnlocks";
+import {Button} from "@mui/material";
 
 
 type AllUnloksProps = {
@@ -36,15 +37,16 @@ function AllUnlocksComponent({ showAllUnloks, world, onCloseAllUnloks}: AllUnlok
                                     <div className="productName">
                                         <h1>{products.name}</h1>
                                     </div>
-                                        {products.palliers.map(palier => (!palier.unlocked &&
+                                        {products.palliers.map(palier => (
                                             <div className="infosPaliers">
                                                 <div>
-                                                    <img alt="palier logo" className="paliersImg" src={"http://localhost:4000/" + palier.logo}/>
                                                     <h2>{palier.name}</h2>
+                                                    <img alt="palier logo" className="paliersImg" src={"http://localhost:4000/" + palier.logo}/>
                                                 </div>
                                                 <div>
-                                                    <div className="paliersName">{palier.seuil}</div>
+                                                    <div className="paliersSeuil">{palier.seuil}</div>
                                                     <div className="paliersRatio" >{palier.typeratio} x{palier.ratio}</div>
+                                                    {palier.unlocked && <p>Dévérouillé</p>}
                                                 </div>
                                             </div>
                                         ))}

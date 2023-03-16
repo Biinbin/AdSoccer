@@ -3,7 +3,6 @@ import {Pallier, World} from "../world";
 import {Button} from "@mui/material";
 import "../style/Upgrades.css"
 
-
 type UpgradesProps = {
     showUpgrades: boolean;
     world: World;
