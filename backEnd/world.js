@@ -410,7 +410,7 @@ module.exports = {
             "unlocked": false
         },
         {
-            "name": "Juventus",
+            "name": "Juventus ",
             "logo": "icones/juventus.png",
             "seuil": 2e3,
             "idcible": 6,

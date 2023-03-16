@@ -36,6 +36,7 @@ function ProductComponent({ product, onProductionDone,onProductBuy, qtmulti, mon
         }
     )
     function startFabrication () {
+        if(product.quantite>=1){}
         lastUpdate.current = Date.now();
         setTimeLeft(product.vitesse);
         lancerProduction({ variables: { id: product.id } });
@@ -84,15 +85,11 @@ function ProductComponent({ product, onProductionDone,onProductBuy, qtmulti, mon
     }
     function handleBuyProduct() {
         const canBuy = calcMaxCanBuy();
-        console.log(money)
-        console.log(product.cout)
-        console.log(money < product.cout)
         switch (qtmulti) {
             case "x1" :
             case "x10" :
             case "x100" :
                 let qtmultInt = parseInt(qtmulti.substring(1))
-
                 if (qtmultInt <= canBuy) {
                     onProductBuy(qtmultInt, product);
                 }
@@ -135,7 +132,7 @@ function ProductComponent({ product, onProductionDone,onProductBuy, qtmulti, mon
                     id={"handleBuyProduct" + product.id.toString()}
                     disabled={money < product.cout}>
                 Buy {qtmulti} for :
-                <span dangerouslySetInnerHTML={{__html: transform(product.cout)}}></span>$
+                <span dangerouslySetInnerHTML={{__html: transform(product.cout* parseInt(qtmulti.substring(1))*Math.pow(product.croissance, product.quantite))}}></span>$
             </button>
         </div>
     );

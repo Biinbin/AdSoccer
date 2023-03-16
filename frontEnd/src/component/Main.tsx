@@ -108,20 +108,51 @@ export default function Main({ loadworld, username}: MainProps) {
     }
 
     function onProductBuy(quantity: number, product: Product): void {
-        let prix = prev(quantity, product)
-        product.quantite= product.quantite + quantity
-        product.cout=product.cout*Math.pow(product.croissance, quantity)
-        world.money = world.money - prix
-        setWorld(prevWorld => ({...prevWorld, money: prevWorld.money}));
-        acheterQtProduit({ variables: { id: product.id , quantite : quantity} });
-    }
+        let idProduit = product.id;
+        let produit = world.products.find((p) => p.id === idProduit);
+        let coef = Math.pow(product.croissance, quantity);
+        if (produit === undefined) {
+            throw new Error(
+                `Le produit avec l'id ${product.id} n'existe pas`);
+        } else {
+            console.log("money"+ product.cout)
+            world.money -= product.cout  * ((1 - coef) / (1 - produit.croissance));
+            console.log(world.money)
+            product.quantite += quantity;
+            product.cout=product.cout*Math.pow(product.croissance, quantity)
 
-    //calcule le prix du produit en fonction de sa quantité et de sa croissance
-    function prev(quantity: number, product: Product):number{
-        let price = product.cout
-        for (let i=1; i<quantity;i++){
-            price = product.cout+(product.cout*product.croissance)
-        }return price
+            setWorld(prevWorld => ({...prevWorld, money: prevWorld.money}));
+            let palierDebloques = product.palliers.filter((p => p.unlocked === false && p.seuil <= product.quantite));
+            palierDebloques.forEach(p => {
+                console.log("palliers")
+                console.log(product.vitesse)
+                if(p.typeratio=="gain"){
+                    product.revenu= product.revenu*p.ratio;
+                }else{
+                    product.vitesse= product.vitesse/p.ratio;
+                }
+            })
+            let allUnlocksDebloques = world.allunlocks.filter((u) => u.unlocked === false)
+            let counter = 0;
+            let nbTotal = 0;
+            allUnlocksDebloques.forEach(u => {
+                world.products.forEach(p => {
+                    nbTotal += 1;
+                    if (p.quantite >= u.seuil) {
+                        counter += 1
+                    }
+                })
+                if (counter === nbTotal) {
+                    console.log("allunlocks")
+                    if(u.typeratio=="gain"){
+                        product.revenu= product.revenu*u.ratio;
+                    }else{
+                        product.vitesse= product.vitesse*u.ratio;
+                    }
+                }
+            })
+        }
+        acheterQtProduit({ variables: { id: product.id , quantite : quantity} });
     }
 
     const [qtmulti, setQtmulti] = useState("x1");
@@ -145,7 +176,7 @@ export default function Main({ loadworld, username}: MainProps) {
             if (product) {
                 // Positionner la propriété managerUnlocked du produit à vrai
                 product.managerUnlocked = true;
-                engagerManager({ variables: { name : manager.name} });
+                engagerManager({variables: {name: manager.name}});
             }
         }
     }
@@ -161,30 +192,9 @@ export default function Main({ loadworld, username}: MainProps) {
     function onCloseAllUnlocks(){
         setIsAllUnlocksOpen(!isAllUnlocksOpen)
     }
-    function onAllUnlocks(allunlocks: Pallier): void{/*
-        let qt = products.quantite
-        if (qt >= allunlocks.seuil) {
-            // Positionner la propriété unlocked de l'upgrades à vrai
-            allunlocks.unlocked = true;
-            console.log(allunlocks.unlocked)
-            // Trouver le produit associé à l'upgrades
-            const product = world.products.find((p) => p.id === allunlocks.idcible);
-            if (product) {
-                // Trouver le pallier associé à l'upgrades
-                const pallier = product.palliers.find((p) => p.typeratio === allunlocks.typeratio)
-                if (pallier) {
-                if(allunlocks.typeratio=="gain"){
-                    const pallier = product.palliers.find((p) => p.typeratio === allunlocks.typeratio)
-                    product.revenu= product.revenu*allunlocks.ratio;
-                    console.log(product.revenu)
-                }if(allunlocks.typeratio=="vitesse"){
-                    product.timeleft= product.timeleft/allunlocks.ratio;
-                    console.log(product.timeleft)
-                }}
-                acheterCashUpgrade({ variables: { name : allunlocks.name} });
-            }
-        }*/
+    function onAllUnlocks(allunlocks: Pallier): void{
     }
+
 
     function onHireUpgrades(upgrades: Pallier): void{
         let arg = world.money
