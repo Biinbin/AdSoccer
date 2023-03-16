@@ -31,3 +31,20 @@
     object-fit : contain;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 }
+
+.infosPaliers{
+    display: flex;
+    justify-content: space-between;
+    text-align: right;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.paliersImg {
+    width: 150px;
+    height: 150px;
+    object-fit : contain;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}

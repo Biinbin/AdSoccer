@@ -76,7 +76,22 @@ const GET_WORLD = gql`
 `;
 
 function App() {
-    const [username, setUsername] = useState(localStorage.getItem('username') || `Captain${Math.floor(Math.random() * 10000)}`);
+    //const [username, setUsername] = useState (localStorage.getItem('username') || `Captain${Math.floor(Math.random() * 10000)}`);
+
+    const client = useApolloClient();
+
+    let name = localStorage.getItem("username");
+    // si pas de username, on génère un username aléatoire
+    if (!name || name === "") {
+        name = "Captaine" + Math.floor(Math.random() * 10000);
+        localStorage.setItem("username", name);
+    }
+
+    const [username, setUsername] = useState(name)
+    const {loading, error, data, refetch } = useQuery(GET_WORLD, {
+        context: { headers: { "x-user": username } }
+    });
+
     const onUserNameChanged = (event: React.FormEvent<HTMLInputElement>) => {
         const username = event.currentTarget.value;
         setUsername(username);
@@ -84,25 +99,19 @@ function App() {
         // Force Apollo client de refetch le query avec le nveau username
         client.resetStore();
     };
-    const client = useApolloClient();
-    const { loading, error, data } = useQuery(GET_WORLD, {
-        context: { headers: { 'x-user': username } },
-    });
 
-    let corps = undefined;
-    let main = undefined;
+    let corps = undefined
     if (loading) corps = <div> Loading... </div>;
     else if (error) corps = <div> Erreur de chargement du monde ! </div>;
-    else main=<div> <Main loadworld={data.getWorld} username={username} products={data.products}/> </div>;
+    else corps=<div> <Main loadworld={data.getWorld} username={username}/> </div>;
 
     return (
         <div className="appli">
         <div className="username" >
             <div> Your ID :</div>
             <input type="text" value={username} onChange={onUserNameChanged} />
-            {corps}
         </div>
-            {main}
+            {corps}
         </div>
     );
 }

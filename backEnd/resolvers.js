@@ -3,6 +3,7 @@ let worldjs = require("./world");
 const fs = require("fs").promises;
 
 function saveWorld(context) {
+    context.world.lastupdate = Date.now().toString();
     fs.writeFile("userworlds/" + context.user + "-world.json",
         JSON.stringify(context.world), err => {
             if (err) {
@@ -46,7 +47,6 @@ function updateScore(context) {
         context.world.score += qte * produitR.revenu * produitR.quantite * (1 + context.world.activeangels * context.world.angelbonus / 100)
         context.world.money += qte * produitR.revenu * produitR.quantite * (1 + context.world.activeangels * context.world.angelbonus / 100)
     })
-    context.world.lastupdate = Date.now().toString()
 }
 
 function addBonus(bonus, context) {
@@ -63,7 +63,9 @@ function addBonus(bonus, context) {
             bonus.unlocked = true;
         }
     } else if (bonus.idcible == 0) {
+        console.log("coucou")
         if (bonus.typeratio === "vitesse") {
+            console.log("coucou2")
             world.products.forEach(p => {
                 Math.round(p.vitesse = p.vitesse / bonus.ratio);
             })
@@ -105,10 +107,11 @@ module.exports = {
             } else {
                 context.world.money -= produit.cout * ((1 - coef) / (1 - produit.croissance));
                 produit.quantite += qte;
-                produit.cout = produit.cout * Math.pow(produit.croissance, qte);
+                produit.cout =produit.cout * Math.pow(produit.croissance, qte);
 
-                let palierDebloques = produit.palliers.filter((p => p.unlocked === false && p.ratio < produit.quantite));
+                let palierDebloques = produit.palliers.filter((p => p.unlocked === false && p.seuil < produit.quantite));
                 palierDebloques.forEach(p => {
+                    console.log("palliers")
                     addBonus(p, context);
                 })
 
@@ -123,11 +126,10 @@ module.exports = {
                         }
                     })
                     if (counter === nbTotal) {
+                        console.log("allunlocks")
                         addBonus(u, context)
                     }
                 })
-
-                world.lastupdate = Date.now().toString();
                 saveWorld(context);
                 return produit;
             }
@@ -163,7 +165,6 @@ module.exports = {
                 context.world.money -= manager.seuil
                 manager.unlocked = true;
                 produit.managerUnlocked = true;
-                world.lastupdate = Date.now().toString();
                 saveWorld(context)
                 return manager
             }
@@ -181,7 +182,6 @@ module.exports = {
             } else {
                 world.money -= upgrade.seuil;
                 addBonus(upgrade, context);
-                world.lastupdate = Date.now().toString();
                 saveWorld(context);
                 return upgrade;
             }
@@ -199,7 +199,6 @@ module.exports = {
             } else {
                 world.activeangels -= angel.seuil;
                 addBonus(angel, context);
-                world.lastupdate = Date.now().toString();
                 saveWorld(context);
                 return angel;
             }
@@ -230,7 +229,6 @@ module.exports = {
             //Réinitialisation du score à 0
             nWorld.score = 0;
 
-            nWorld.lastupdate = Date.now().toString();
             context.world = nWorld;
             saveWorld(context);
             return nWorld;

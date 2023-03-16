@@ -14,19 +14,17 @@ import product from "./Product";
 type MainProps = {
     loadworld: World;
     username: string;
-    products : Product;
 };
 
-export default function Main({ loadworld, username, products }: MainProps) {
+export default function Main({ loadworld, username}: MainProps) {
     const [world, setWorld] = useState(
         JSON.parse(JSON.stringify(loadworld)) as World
     );
     const ACHETER_QT_PRODUIT = gql`
          mutation acheterQtProduit($id: Int!, $quantite: Int!) {
             acheterQtProduit(id: $id, quantite: $quantite) {
-             id
-             quantite
-             }
+                id             
+            }
          }`;
     const ENGAGER_MANAGER = gql`
          mutation engagerManager($name: String!) {
@@ -83,7 +81,7 @@ export default function Main({ loadworld, username, products }: MainProps) {
         product.cout=product.cout*Math.pow(product.croissance, quantity)
         world.money = world.money - prix
         setWorld(prevWorld => ({...prevWorld, money: prevWorld.money}));
-        //acheterQtProduit({ variables: { id: product.id , quantite : quantity} });
+        acheterQtProduit({ variables: { id: product.id , quantite : quantity} });
     }
 
     //calcule le prix du produit en fonction de sa quantité et de sa croissance
@@ -125,7 +123,7 @@ export default function Main({ loadworld, username, products }: MainProps) {
     function onCloseAllUnlocks(){
         setIsAllUnlocksOpen(!isAllUnlocksOpen)
     }
-    function onAllUnlocks(allunlocks: Pallier): void{
+    function onAllUnlocks(allunlocks: Pallier): void{/*
         let qt = products.quantite
         if (qt >= allunlocks.seuil) {
             // Positionner la propriété unlocked de l'upgrades à vrai
@@ -147,7 +145,7 @@ export default function Main({ loadworld, username, products }: MainProps) {
                 }}
                 acheterCashUpgrade({ variables: { name : allunlocks.name} });
             }
-        }
+        }*/
     }
 
     function onHireUpgrades(upgrades: Pallier): void{
