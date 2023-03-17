@@ -93,19 +93,11 @@ function InvestorsComponent({ showInvestors, username, world, onCloseInvestors}:
         }
     )
     let score = world.score;
-    let activeangels = world.activeangels;
     let totalangels = world.totalangels;
-
     //Calcul des anges
-    let activeAngelsBis = Math.round(150 * Math.sqrt(score / Math.pow(10, 4)) - totalangels);
-    let totalAngelsBis = Math.round(150 * Math.sqrt(score / Math.pow(10, 4)) - totalangels);
-
-    if (activeAngelsBis > 0) {
-        world.activeangels += activeAngelsBis
-        world.totalangels += totalAngelsBis
-    }
+    let activeAngelsBis = Math.round(150 * Math.sqrt(score / Math.pow(10, 4)));
     function toggleInvestors(){
-        console.log("Toggle Managers, State =", State);
+        //console.log("Toggle Managers, State =", State);
         setState(!State);
         onCloseInvestors();
     }
@@ -121,10 +113,11 @@ function InvestorsComponent({ showInvestors, username, world, onCloseInvestors}:
                         <div className="infosinvestors">
                             <div className="totalangels">Total des Anges : {world.totalangels}</div>
                             <div className="angelbonus">2% de bonus par anges</div>
-                            <div className="activeangels">Anges actifs : {world.activeangels}</div>
                         </div>
                         <div>
-                            <button className="button-Investors" onClick={ () => resetWorld()}>Reset World</button>
+                            <button className="button-reset" onClick={() => { resetWorld(); window.location.reload(); }}>
+                                Reset World avec {activeAngelsBis} nouveaux anges en plus
+                            </button>
                         </div>
                         <button className="closebutton" onClick={toggleInvestors}>Close</button>
                     </div>

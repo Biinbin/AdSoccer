@@ -91,7 +91,8 @@
 .button-managers:hover,
 .button-AllUnlocks:hover,
 .button-Angels:hover,
-.button-Upgrades:hover {
+.button-Upgrades:hover,
+.button-Investors:hover {
     background-color: #29378d;
 }
 .product-grid {

@@ -211,15 +211,13 @@ module.exports = {
 
             //Récupération des anges
             nWorld.totalangels = totalangels;
-            nWorld.activeangels = activeangels;
+            nWorld.activeangels = 0;
 
             //Calcul des anges
-            let activeAngelsBis = Math.round(150 * Math.sqrt(score / Math.pow(10, 4)) - totalangels);
-            let totalAngelsBis = Math.round(150 * Math.sqrt(score / Math.pow(10, 4)) - totalangels);
+            let activeAngelsBis = Math.round(150 * Math.sqrt(score / Math.pow(10, 4)));
 
             if (activeAngelsBis > 0) {
-                nWorld.activeangels += activeAngelsBis
-                nWorld.totalangels += totalAngelsBis
+                nWorld.totalangels += activeAngelsBis
             }
 
             //Réinitialisation du score à 0

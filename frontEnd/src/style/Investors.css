@@ -24,3 +24,22 @@
     padding: 10px;
     border: 1px solid #ccc;
 }
+
+.button-reset{
+    display: block;
+    margin: auto;
+    text-align: center;
+    line-height: 50px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    background-color: #ff8400;
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.button-reset:hover {
+    background-color: #29378d;
+}
