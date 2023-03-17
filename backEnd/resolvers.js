@@ -77,7 +77,7 @@ function addBonus(bonus, context) {
         }
     } else if (bonus.idcible == -1) {
         bonus.unlocked = true;
-        world.angelbonus = bonus.ratio + world.angelbonus
+        world.angelbonus += bonus.ratio
     }
 }
 
