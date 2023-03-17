@@ -73,7 +73,8 @@
 .button-managers,
 .button-AllUnlocks,
 .button-Angels,
-.button-Upgrades {
+.button-Upgrades,
+.button-Investors{
     display: block;
     margin-bottom: 1rem;
     padding: 0.5rem 1rem;

@@ -35,6 +35,7 @@ function ProductComponent({ product, onProductionDone,onProductBuy, qtmulti, mon
             }
         }
     )
+
     function startFabrication () {
         if(product.quantite>=1){}
         lastUpdate.current = Date.now();
@@ -110,6 +111,8 @@ function ProductComponent({ product, onProductionDone,onProductBuy, qtmulti, mon
         setMaxBuyable(calcMaxCanBuy());
     }, [money, product]);
 
+    let coef = Math.pow(product.croissance, parseInt(qtmulti.substring(1)));
+
     return (
         <div className="product-container">
             <img className="product-image" src={"http://localhost:4000/" + product.logo} onClick={startFabrication} alt={product.name} />
@@ -132,7 +135,7 @@ function ProductComponent({ product, onProductionDone,onProductBuy, qtmulti, mon
                     id={"handleBuyProduct" + product.id.toString()}
                     disabled={money < product.cout}>
                 Buy {qtmulti} for :
-                <span dangerouslySetInnerHTML={{__html: transform(product.cout* parseInt(qtmulti.substring(1))*Math.pow(product.croissance, product.quantite))}}></span>$
+                <span dangerouslySetInnerHTML={{__html: transform(product.cout*parseInt(qtmulti.substring(1))+((1 - coef) / (1 - product.croissance))-1)}}></span>$
             </button>
         </div>
     );

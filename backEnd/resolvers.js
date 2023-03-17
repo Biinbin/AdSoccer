@@ -193,7 +193,7 @@ module.exports = {
                 throw new Error(
                     `L'ange avec l'id ${args.id} n'existe pas`);
             } else {
-                world.activeangels -= angel.seuil;
+                world.totalangels -= angel.seuil;
                 addBonus(angel, context);
                 saveWorld(context);
                 return angel;

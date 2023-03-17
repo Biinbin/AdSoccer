@@ -12,6 +12,7 @@ import managers from "./Managers";
 import UpgradesComponent from "./Upgrades";
 import product from "./Product";
 import angelsUpgrades from "./AngelsUpgrades";
+import InvestorsComponent from "./Investors";
 
 type MainProps = {
     loadworld: World;
@@ -40,7 +41,6 @@ export default function Main({ loadworld, username}: MainProps) {
                 name
              }
          }`;
-
     const ACHETER_ANGELS_UPGRADES = gql`
          mutation acheterAngelUpgrade($name: String!) {
             acheterAngelUpgrade(name: $name) {
@@ -151,14 +151,6 @@ export default function Main({ loadworld, username}: MainProps) {
         }
     )
 
-    const [resetWorld] = useMutation(RESET_WORLD,
-        { context: { headers: { "x-user": username }},
-            onError: (error): void => {
-                console.log(error);
-            }
-        }
-    )
-
     useEffect(() => {
         setWorld(JSON.parse(JSON.stringify(loadworld)) as World);
     }, [loadworld]);
@@ -173,15 +165,14 @@ export default function Main({ loadworld, username}: MainProps) {
     }
 
     function onProductBuy(quantity: number, product: Product): void {
-        let idProduit = product.id;
-        let produit = world.products.find((p) => p.id === idProduit);
+        let produit = world.products.find((p) => p.id === product.id);
         let coef = Math.pow(product.croissance, quantity);
         if (produit === undefined) {
             throw new Error(
                 `Le produit avec l'id ${product.id} n'existe pas`);
         } else {
             console.log("money"+ product.cout)
-            world.money -= product.cout  * ((1 - coef) / (1 - produit.croissance));
+            world.money -= product.cout  * ((1 - coef) / (1 - product.croissance));
             console.log(world.money)
             product.quantite += quantity;
             product.cout=product.cout*Math.pow(product.croissance, quantity)
@@ -225,9 +216,7 @@ export default function Main({ loadworld, username}: MainProps) {
     const [isAllUnlocksOpen, setIsAllUnlocksOpen] = useState(false);
     const [isAngelsOpen, setIsAngelsOpen] = useState(false);
     const [isUpgradesOpen, setIsUpgradesOpen] = useState(false);
-    const [isInvestorsOpen, setInvestorsOpen] = useState(false);
-
-
+    const [isInvestorsOpen, setIsInvestorsOpen] = useState(false);
 
     function onHireManager(manager: Pallier): void{
         let arg = world.money
@@ -257,9 +246,9 @@ export default function Main({ loadworld, username}: MainProps) {
     function onCloseAllUnlocks(){
         setIsAllUnlocksOpen(!isAllUnlocksOpen)
     }
+
     function onAllUnlocks(allunlocks: Pallier): void{
     }
-
 
     function onHireUpgrades(upgrades: Pallier): void{
         let arg = world.money
@@ -294,6 +283,10 @@ export default function Main({ loadworld, username}: MainProps) {
 
     function onCloseUpgrades(){
         setIsUpgradesOpen(!isUpgradesOpen)
+    }
+
+    function onCloseInvestors(){
+        setIsInvestorsOpen(!isInvestorsOpen)
     }
 
     return (
@@ -358,7 +351,11 @@ export default function Main({ loadworld, username}: MainProps) {
                                        onCloseUpgrades={onCloseUpgrades}/>
                 </div>
                 <div>
-                    <button className="button-Upgrades" onClick={ () => resetWorld()}>Reset World</button>
+                    <button className="button-Investors" onClick={() => setIsInvestorsOpen(!isInvestorsOpen)}>Angel Investors</button>
+                    <InvestorsComponent showInvestors={isInvestorsOpen}
+                                        username={username}
+                                        world={world}
+                                        onCloseInvestors={onCloseInvestors}/>
                 </div>
             </div>
             <div className="product-grid">

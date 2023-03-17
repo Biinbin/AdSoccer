@@ -1,0 +1,26 @@
+.modal {
+    position: fixed; /* reste en place */
+    z-index: 3; /* au dessus du reste */
+    width: 800px; /* largeur */
+    height: 800px; /* hauteur */
+    overflow: auto; /* barre de scroll si besoin */
+    background-color: rgba(255, 255, 255, 0.96); /* opaque */
+    border: solid;
+    top:10%; /* a 10% du haut */
+    left:20%; /* a 20% de la gauche */
+}
+.modal .title {
+    font-size: 2em;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.infosinvestors{
+    display: flex;
+    justify-content: space-between;
+    text-align: right;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
