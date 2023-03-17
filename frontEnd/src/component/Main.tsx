@@ -49,9 +49,74 @@ export default function Main({ loadworld, username}: MainProps) {
          }`;
 
     const RESET_WORLD = gql`
-         mutation resetWorld($name: String!) {
-            resetWorld(name: $name) {
-            world
+         mutation resetWorld {
+            resetWorld {
+            
+    name
+    logo
+    money
+    score
+    totalangels
+    activeangels
+    angelbonus
+    lastupdate
+    products {
+      id
+      name
+      logo
+      cout
+      croissance
+      revenu
+      vitesse
+      quantite
+      timeleft
+      managerUnlocked
+      palliers {
+        name
+        logo
+        seuil
+        idcible
+        ratio
+        typeratio
+        unlocked
+      }
+    }
+    allunlocks {
+      name
+      logo
+      seuil
+      idcible
+      ratio
+      typeratio
+      unlocked
+    }
+    upgrades {
+      name
+      logo
+      seuil
+      idcible
+      ratio
+      typeratio
+      unlocked
+    }
+    angelupgrades {
+      name
+      logo
+      seuil
+      idcible
+      ratio
+      typeratio
+      unlocked
+    }
+    managers {
+      name
+      logo
+      seuil
+      idcible
+      ratio
+      typeratio
+      unlocked
+    }
              }
          }`;
 
