@@ -114,3 +114,7 @@
 .product-buy-button:hover {
     background-color: #ff9e40;
 }
+
+.timeLeft {
+    text-align: center;
+}
