@@ -4,9 +4,7 @@ import {useState, useEffect, useRef} from "react";
 import MyProgressbar, {Orientation} from "./MyProgressbar";
 import {useInterval} from './MyInterval';
 import {transform} from "./utils";
-import managers from "./Managers";
 import {gql, useMutation} from "@apollo/client";
-import {switchClasses} from "@mui/material";
 
 type ProductProps = {
     product: Product;

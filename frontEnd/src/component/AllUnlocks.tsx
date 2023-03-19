@@ -2,8 +2,6 @@ import React, {useState} from 'react';
 import {Pallier, World} from "../world";
 import "../style/AllUnlocks.css"
 import "../style/Paliers.css"
-import allUnlocks from "./AllUnlocks";
-import {Button} from "@mui/material";
 
 
 type AllUnloksProps = {

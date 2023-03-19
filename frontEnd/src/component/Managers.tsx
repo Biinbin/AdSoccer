@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {Pallier, World} from "../world";
 import {Button, Snackbar} from "@mui/material";
 import "../style/Managers.css"
-import product from "./Product";
 
 
 type ManagersProps = {

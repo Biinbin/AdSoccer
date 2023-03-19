@@ -1,4 +1,3 @@
-const {lastupdate, allunlocks, angelbonus} = require("./world");
 let worldjs = require("./world");
 const fs = require("fs").promises;
 
@@ -216,10 +215,6 @@ module.exports = {
 
                 nWorld.activeangels += Math.round(150 * Math.sqrt(actScore / Math.pow(10, 4)))
                 nWorld.totalangels += Math.round(150 * Math.sqrt(actScore / Math.pow(10, 4)))
-                console.log("active : ", nWorld.activeangels)
-                console.log("totaux : ", nWorld.totalangels)
-
-            //Réinitialisation du score à 0
 
             context.world = nWorld;
             saveWorld(context);

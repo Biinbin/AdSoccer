@@ -331,7 +331,7 @@ module.exports = {
         {
             "name": "Monaco",
             "logo": "icones/monaco.png",
-            "seuil": 1e3,
+            "seuil": 3e3,
             "idcible": 2,
             "ratio": 3,
             "typeratio": "gain",
@@ -340,7 +340,7 @@ module.exports = {
         {
             "name": "Paris Saint-Germain",
             "logo": "icones/psg.png",
-            "seuil": 2e3,
+            "seuil": 4e3,
             "idcible": 2,
             "ratio": 3,
             "typeratio": "gain",
@@ -349,7 +349,7 @@ module.exports = {
         {
             "name": "Monaco ",
             "logo": "icones/monaco.png",
-            "seuil": 1e3,
+            "seuil": 5e3,
             "idcible": 3,
             "ratio": 3,
             "typeratio": "gain",
@@ -358,7 +358,7 @@ module.exports = {
         {
             "name": "Arsenal",
             "logo": "icones/arsenal.png",
-            "seuil": 2e3,
+            "seuil": 6e3,
             "idcible": 3,
             "ratio": 3,
             "typeratio": "gain",
@@ -367,7 +367,7 @@ module.exports = {
         {
             "name": "Juventus",
             "logo": "icones/juventus.png",
-            "seuil": 1e3,
+            "seuil": 7e3,
             "idcible": 4,
             "ratio": 3,
             "typeratio": "gain",
@@ -376,7 +376,7 @@ module.exports = {
         {
             "name": "Real Madrid",
             "logo": "icones/realmadrid.png",
-            "seuil": 2e3,
+            "seuil": 8e3,
             "idcible": 4,
             "ratio": 3,
             "typeratio": "gain",
@@ -385,7 +385,7 @@ module.exports = {
         {
             "name": "Nice",
             "logo": "icones/nice.png",
-            "seuil": 1e3,
+            "seuil": 9e3,
             "idcible": 5,
             "ratio": 3,
             "typeratio": "gain",
@@ -394,7 +394,7 @@ module.exports = {
         {
             "name": "Reims",
             "logo": "icones/reims.png",
-            "seuil": 2e3,
+            "seuil": 10e3,
             "idcible": 5,
             "ratio": 3,
             "typeratio": "gain",
@@ -403,7 +403,7 @@ module.exports = {
         {
             "name": "Saint-Etienne",
             "logo": "icones/se.png",
-            "seuil": 1e3,
+            "seuil": 11e3,
             "idcible": 6,
             "ratio": 3,
             "typeratio": "gain",
@@ -412,7 +412,7 @@ module.exports = {
         {
             "name": "Juventus ",
             "logo": "icones/juventus.png",
-            "seuil": 2e3,
+            "seuil": 12e3,
             "idcible": 6,
             "ratio": 3,
             "typeratio": "gain",
