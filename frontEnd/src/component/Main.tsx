@@ -192,10 +192,12 @@ export default function Main({loadworld, username}: MainProps) {
             palierDebloques.forEach(p => {
                 if (p.typeratio == "gain") {
                     product.revenu = product.revenu * p.ratio;
+                    p.unlocked = true;
                     setOpenSnackbar(true);
                     setSnackbarMessage(`Le pallier ${p.name} est débloquée`);
                 } else {
                     product.vitesse = product.vitesse / p.ratio;
+                    p.unlocked = true;
                     setOpenSnackbar(true);
                     setSnackbarMessage(`Le pallier ${p.name} est débloquée`);
                 }
@@ -214,10 +216,12 @@ export default function Main({loadworld, username}: MainProps) {
                     console.log("allunlocks")
                     if (u.typeratio == "gain") {
                         product.revenu = product.revenu * u.ratio;
+                        u.unlocked = true;
                         setOpenSnackbar(true);
                         setSnackbarMessage(`${u.name} est débloquée`);
                     } else {
                         product.vitesse = product.vitesse * u.ratio;
+                        u.unlocked = true;
                         setOpenSnackbar(true);
                         setSnackbarMessage(`${u.name} est débloquée`);
                     }
