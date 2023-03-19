@@ -184,10 +184,14 @@ export default function Main({ loadworld, username}: MainProps) {
                 console.log(product.vitesse)
                 if(p.typeratio=="gain"){
                     product.revenu= product.revenu*p.ratio;
+                    p.unlocked = true;
                 }else{
                     product.vitesse= product.vitesse/p.ratio;
+                    console.log("palliers3")
+                    p.unlocked = true;
                 }
             })
+
             let allUnlocksDebloques = world.allunlocks.filter((u) => u.unlocked === false)
             let counter = 0;
             let nbTotal = 0;
@@ -202,8 +206,10 @@ export default function Main({ loadworld, username}: MainProps) {
                     console.log("allunlocks")
                     if(u.typeratio=="gain"){
                         product.revenu= product.revenu*u.ratio;
+                        u.unlocked = true;
                     }else{
                         product.vitesse= product.vitesse*u.ratio;
+                        u.unlocked = true;
                     }
                 }
             })

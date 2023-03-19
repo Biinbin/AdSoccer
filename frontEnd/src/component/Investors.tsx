@@ -93,9 +93,9 @@ function InvestorsComponent({ showInvestors, username, world, onCloseInvestors}:
         }
     )
     let score = world.score;
-    let totalangels = world.totalangels;
     //Calcul des anges
     let activeAngelsBis = Math.round(150 * Math.sqrt(score / Math.pow(10, 4)));
+
     function toggleInvestors(){
         //console.log("Toggle Managers, State =", State);
         setState(!State);

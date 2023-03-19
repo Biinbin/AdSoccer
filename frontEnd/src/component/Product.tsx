@@ -37,11 +37,13 @@ function ProductComponent({ product, onProductionDone,onProductBuy, qtmulti, mon
     )
 
     function startFabrication () {
-        if(product.quantite>=1){}
-        lastUpdate.current = Date.now();
-        setTimeLeft(product.vitesse);
-        lancerProduction({ variables: { id: product.id } });
+        if(product.quantite>=1){
+            lastUpdate.current = Date.now();
+            setTimeLeft(product.vitesse);
+            lancerProduction({ variables: { id: product.id } });
+        }
     };
+
     function calcScore() {
         let end = Date.now() - lastUpdate.current;
         lastUpdate.current = Date.now();

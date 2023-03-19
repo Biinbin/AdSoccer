@@ -56,7 +56,7 @@ function AllUnlocksComponent({ showAllUnloks, world, onCloseAllUnloks}: AllUnlok
                         }
                     </div>
                     <div>
-                        <h1 className="title">AllUnloks</h1>
+                        <h1 className="title">AllUnlocks</h1>
                     </div>
                     <div>
                         { world.allunlocks.filter(allUnloks => !allUnloks.unlocked).map(
@@ -71,6 +71,7 @@ function AllUnlocksComponent({ showAllUnloks, world, onCloseAllUnloks}: AllUnlok
                                         <div className="allUnloksname">{allunlocks.name}</div>
                                         <div className="allUnlokscost">{allunlocks.seuil}</div>
                                         <div className="allUnloksRatio">{allunlocks.typeratio} x{allunlocks.ratio}</div>
+                                        {allunlocks.unlocked && <p>Dévérouillé</p>}
                                     </div>
                                 </div>
                         )
