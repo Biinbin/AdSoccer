@@ -163,10 +163,11 @@ export default function Main({loadworld, username}: MainProps) {
     useEffect(() => {
         const unlockedManagers = world.managers.filter(m => !m.unlocked && world.money >= m.seuil).length;
         setNumManagers(unlockedManagers);
-
         const unlockedUpgrades = world.upgrades.filter(u => !u.unlocked && world.money >= u.seuil).length;
         setNumUpgrades(unlockedUpgrades);
-    }, [world.money, world.managers]);
+        const unlockedAngels = world.angelupgrades.filter(a => !a.unlocked && world.activeangels >= a.seuil).length;
+        setNumAngels(unlockedAngels);
+    }, [world.money]);
 
     function onProductionDone(p: Product): void {
         // calcul de la somme obtenue par la production du produit
@@ -239,6 +240,7 @@ export default function Main({loadworld, username}: MainProps) {
     const [isInvestorsOpen, setIsInvestorsOpen] = useState(false);
     const [numManagers, setNumManagers] = useState(0);
     const [numUpgrades, setNumUpgrades] = useState(0);
+    const [numAngels, setNumAngels] = useState(0);
 
 
     function onHireManager(manager: Pallier): void {
@@ -361,16 +363,15 @@ export default function Main({loadworld, username}: MainProps) {
                     <button className="button-AllUnlocks"
                             onClick={() => setIsAllUnlocksOpen(!isAllUnlocksOpen)}>Unlocks
                     </button>
-
                     <AllUnlocksComponent showAllUnloks={isAllUnlocksOpen}
                                          onAllUnlocks={onAllUnlocks}
                                          world={world}
                                          onCloseAllUnloks={onCloseAllUnlocks}/>
                 </div>
                 <div>
-
+                    <Badge badgeContent={numAngels} color="secondary">
                     <button className="button-Angels" onClick={() => setIsAngelsOpen(!isAngelsOpen)}>Angels</button>
-
+                    </Badge>
                     <AngelsComponent showAngels={isAngelsOpen}
                                      onHireAngels={onBuyAngels}
                                      world={world}
