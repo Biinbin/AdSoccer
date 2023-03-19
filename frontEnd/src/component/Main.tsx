@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { World, Product, Pallier} from "../world";
+import {useState, useEffect} from "react";
+import {World, Product, Pallier} from "../world";
 import "../style/main.css";
 import '../style/Product.css'
 import ProductComponent from "./Product";
@@ -8,10 +8,8 @@ import ManagersComponent from "./Managers";
 import AllUnlocksComponent from "./AllUnlocks";
 import AngelsComponent from "./AngelsUpgrades";
 import {gql, useMutation} from "@apollo/client";
-import managers from "./Managers";
 import UpgradesComponent from "./Upgrades";
-import product from "./Product";
-import angelsUpgrades from "./AngelsUpgrades";
+import {Badge, Snackbar} from "@mui/material";
 import InvestorsComponent from "./Investors";
 
 type MainProps = {
@@ -19,7 +17,7 @@ type MainProps = {
     username: string;
 };
 
-export default function Main({ loadworld, username}: MainProps) {
+export default function Main({loadworld, username}: MainProps) {
     const [world, setWorld] = useState(
         JSON.parse(JSON.stringify(loadworld)) as World
     );
@@ -121,7 +119,8 @@ export default function Main({ loadworld, username}: MainProps) {
          }`;
 
     const [acheterQtProduit] = useMutation(ACHETER_QT_PRODUIT,
-        { context: { headers: { "x-user": username }},
+        {
+            context: {headers: {"x-user": username}},
             onError: (error): void => {
                 console.log(error);
             }
@@ -129,14 +128,16 @@ export default function Main({ loadworld, username}: MainProps) {
     )
 
     const [engagerManager] = useMutation(ENGAGER_MANAGER,
-        { context: { headers: { "x-user": username }},
+        {
+            context: {headers: {"x-user": username}},
             onError: (error): void => {
                 console.log(error);
             }
         }
     )
     const [acheterCashUpgrade] = useMutation(ACHETER_CASH_UPGRADES,
-        { context: { headers: { "x-user": username }},
+        {
+            context: {headers: {"x-user": username}},
             onError: (error): void => {
                 console.log(error);
             }
@@ -144,22 +145,34 @@ export default function Main({ loadworld, username}: MainProps) {
     )
 
     const [acheterAngelUpgrade] = useMutation(ACHETER_ANGELS_UPGRADES,
-        { context: { headers: { "x-user": username }},
+        {
+            context: {headers: {"x-user": username}},
             onError: (error): void => {
                 console.log(error);
             }
         }
     )
 
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState("");
+
     useEffect(() => {
         setWorld(JSON.parse(JSON.stringify(loadworld)) as World);
     }, [loadworld]);
+
+    useEffect(() => {
+        const unlockedManagers = world.managers.filter(m => !m.unlocked && world.money >= m.seuil).length;
+        setNumManagers(unlockedManagers);
+
+        const unlockedUpgrades = world.upgrades.filter(u => !u.unlocked && world.money >= u.seuil).length;
+        setNumUpgrades(unlockedUpgrades);
+    }, [world.money, world.managers]);
 
     function onProductionDone(p: Product): void {
         // calcul de la somme obtenue par la production du produit
         let gain = (p.quantite * p.revenu)
         world.score += gain
-        world.money+=gain
+        world.money += gain
         // ajout de la somme à l’argent possédé
         setWorld(prevWorld => ({...prevWorld, score: prevWorld.score + gain}));
     }
@@ -171,27 +184,27 @@ export default function Main({ loadworld, username}: MainProps) {
             throw new Error(
                 `Le produit avec l'id ${product.id} n'existe pas`);
         } else {
-            console.log("money"+ product.cout)
-            world.money -= product.cout  * ((1 - coef) / (1 - product.croissance));
-            console.log(world.money)
+            //console.log("money"+ product.cout)
+            world.money -= product.cout * ((1 - coef) / (1 - product.croissance));
+            //console.log(world.money)
             product.quantite += quantity;
-            product.cout=product.cout*Math.pow(product.croissance, quantity)
+            product.cout = product.cout * Math.pow(product.croissance, quantity)
 
             setWorld(prevWorld => ({...prevWorld, money: prevWorld.money}));
             let palierDebloques = product.palliers.filter((p => p.unlocked === false && p.seuil <= product.quantite));
             palierDebloques.forEach(p => {
-                console.log("palliers")
-                console.log(product.vitesse)
-                if(p.typeratio=="gain"){
-                    product.revenu= product.revenu*p.ratio;
-                    p.unlocked = true;
-                }else{
-                    product.vitesse= product.vitesse/p.ratio;
-                    console.log("palliers3")
-                    p.unlocked = true;
+                //console.log("palliers")
+                //console.log(product.vitesse)
+                if (p.typeratio == "gain") {
+                    product.revenu = product.revenu * p.ratio;
+                    setOpenSnackbar(true);
+                    setSnackbarMessage(`Le pallier ${p.name} est débloquée`);
+                } else {
+                    product.vitesse = product.vitesse / p.ratio;
+                    setOpenSnackbar(true);
+                    setSnackbarMessage(`Le pallier ${p.name} est débloquée`);
                 }
             })
-
             let allUnlocksDebloques = world.allunlocks.filter((u) => u.unlocked === false)
             let counter = 0;
             let nbTotal = 0;
@@ -204,17 +217,19 @@ export default function Main({ loadworld, username}: MainProps) {
                 })
                 if (counter === nbTotal) {
                     console.log("allunlocks")
-                    if(u.typeratio=="gain"){
-                        product.revenu= product.revenu*u.ratio;
-                        u.unlocked = true;
-                    }else{
-                        product.vitesse= product.vitesse*u.ratio;
-                        u.unlocked = true;
+                    if (u.typeratio == "gain") {
+                        product.revenu = product.revenu * u.ratio;
+                        setOpenSnackbar(true);
+                        setSnackbarMessage(`${u.name} est débloquée`);
+                    } else {
+                        product.vitesse = product.vitesse * u.ratio;
+                        setOpenSnackbar(true);
+                        setSnackbarMessage(`${u.name} est débloquée`);
                     }
                 }
             })
         }
-        acheterQtProduit({ variables: { id: product.id , quantite : quantity} });
+        acheterQtProduit({variables: {id: product.id, quantite: quantity}});
     }
 
     const [qtmulti, setQtmulti] = useState("x1");
@@ -223,8 +238,11 @@ export default function Main({ loadworld, username}: MainProps) {
     const [isAngelsOpen, setIsAngelsOpen] = useState(false);
     const [isUpgradesOpen, setIsUpgradesOpen] = useState(false);
     const [isInvestorsOpen, setIsInvestorsOpen] = useState(false);
+    const [numManagers, setNumManagers] = useState(0);
+    const [numUpgrades, setNumUpgrades] = useState(0);
 
-    function onHireManager(manager: Pallier): void{
+
+    function onHireManager(manager: Pallier): void {
         let arg = world.money
         if (arg >= manager.seuil) {
             // Retirer le coût du manager de l'argent possédé par le joueur
@@ -241,22 +259,22 @@ export default function Main({ loadworld, username}: MainProps) {
         }
     }
 
-    function onClose(){
+    function onClose() {
         setIsManagerOpen(!isManagerOpen)
     }
 
-    function onCloseAngels(){
+    function onCloseAngels() {
         setIsAngelsOpen(!isAngelsOpen);
     }
 
-    function onCloseAllUnlocks(){
+    function onCloseAllUnlocks() {
         setIsAllUnlocksOpen(!isAllUnlocksOpen)
     }
 
-    function onAllUnlocks(allunlocks: Pallier): void{
+    function onAllUnlocks(allunlocks: Pallier): void {
     }
 
-    function onHireUpgrades(upgrades: Pallier): void{
+    function onHireUpgrades(upgrades: Pallier): void {
         let arg = world.money
         if (arg >= upgrades.seuil) {
             // Retirer le coût de l'upgrades de l'argent possédé par le joueur
@@ -267,31 +285,31 @@ export default function Main({ loadworld, username}: MainProps) {
             const product = world.products.find((p) => p.id === upgrades.idcible);
             if (product) {
                 // Positionner la propriété managerUnlocked du produit à vrai
-                if(upgrades.typeratio=="gain"){
-                    product.revenu= product.revenu*upgrades.ratio;
-                }else{
-                    product.vitesse= product.vitesse*upgrades.ratio;
+                if (upgrades.typeratio == "gain") {
+                    product.revenu = product.revenu * upgrades.ratio;
+                } else {
+                    product.vitesse = product.vitesse * upgrades.ratio;
                 }
-                acheterCashUpgrade({ variables: { name : upgrades.name} });
+                acheterCashUpgrade({variables: {name: upgrades.name}});
             }
         }
     }
 
-    function onBuyAngels (angels: Pallier): void{
+    function onBuyAngels(angels: Pallier): void {
         let arg = world.activeangels
-        if (arg >= angels.seuil){
+        if (arg >= angels.seuil) {
             world.activeangels = arg - angels.seuil;
             angels.unlocked = true;
             world.angelbonus = angels.ratio + world.angelbonus
-            acheterAngelUpgrade({ variables: { name : angels.name} });
+            acheterAngelUpgrade({variables: {name: angels.name}});
         }
     }
 
-    function onCloseUpgrades(){
+    function onCloseUpgrades() {
         setIsUpgradesOpen(!isUpgradesOpen)
     }
 
-    function onCloseInvestors(){
+    function onCloseInvestors() {
         setIsInvestorsOpen(!isInvestorsOpen)
     }
 
@@ -307,10 +325,11 @@ export default function Main({ loadworld, username}: MainProps) {
                 </h1>
                 <div className="money-container">
                     <span className="money-label">Cagnotte Totale</span>
-                    <span className="money-value"><span dangerouslySetInnerHTML={{__html: transform(world.money)}}/>$</span>
+                    <span className="money-value"><span
+                        dangerouslySetInnerHTML={{__html: transform(world.money)}}/>$</span>
                 </div>
-                <button className="multi" onClick={() =>{
-                    switch(qtmulti) {
+                <button className="multi" onClick={() => {
+                    switch (qtmulti) {
                         case "x1":
                             setQtmulti("x10");
                             break;
@@ -323,41 +342,56 @@ export default function Main({ loadworld, username}: MainProps) {
                         default:
                             setQtmulti("x1");
                             break;
-                        }}
+                    }
+                }
                 }>{qtmulti}
                 </button>
             </div>
             <div className="left-panel">
                 <div>
-                    <button className="button-managers" onClick={() => setIsManagerOpen(!isManagerOpen)}>Managers</button>
+                    <Badge badgeContent={numManagers} color="secondary">
+                        <button className="button-managers" onClick={() => setIsManagerOpen(!isManagerOpen)}>Managers
+                        </button>
+                    </Badge>
                     <ManagersComponent showManagers={isManagerOpen}
                                        onHireManager={onHireManager}
                                        world={world}
                                        onClose={onClose}/>
                 </div>
                 <div>
-                    <button className="button-AllUnlocks" onClick={() => setIsAllUnlocksOpen(!isAllUnlocksOpen)}>Unlocks</button>
+                    <button className="button-AllUnlocks"
+                            onClick={() => setIsAllUnlocksOpen(!isAllUnlocksOpen)}>Unlocks
+                    </button>
+
                     <AllUnlocksComponent showAllUnloks={isAllUnlocksOpen}
                                          onAllUnlocks={onAllUnlocks}
                                          world={world}
                                          onCloseAllUnloks={onCloseAllUnlocks}/>
                 </div>
                 <div>
+
                     <button className="button-Angels" onClick={() => setIsAngelsOpen(!isAngelsOpen)}>Angels</button>
-                    <AngelsComponent     showAngels={isAngelsOpen}
-                                         onHireAngels={onBuyAngels}
-                                         world={world}
-                                         onCloseAngels={onCloseAngels}/>
+
+                    <AngelsComponent showAngels={isAngelsOpen}
+                                     onHireAngels={onBuyAngels}
+                                     world={world}
+                                     onCloseAngels={onCloseAngels}/>
                 </div>
                 <div>
-                    <button className="button-Upgrades" onClick={() => setIsUpgradesOpen(!isUpgradesOpen)}>Upgrades</button>
+                    <Badge badgeContent={numUpgrades} color="secondary">
+                        <button className="button-Upgrades"
+                                onClick={() => setIsUpgradesOpen(!isUpgradesOpen)}>Upgrades
+                        </button>
+                    </Badge>
                     <UpgradesComponent showUpgrades={isUpgradesOpen}
                                        onHireUpgrades={onHireUpgrades}
                                        world={world}
                                        onCloseUpgrades={onCloseUpgrades}/>
                 </div>
                 <div>
-                    <button className="button-Investors" onClick={() => setIsInvestorsOpen(!isInvestorsOpen)}>Angel Investors</button>
+                    <button className="button-Investors" onClick={() => setIsInvestorsOpen(!isInvestorsOpen)}>Angel
+                        Investors
+                    </button>
                     <InvestorsComponent showInvestors={isInvestorsOpen}
                                         username={username}
                                         world={world}
@@ -408,6 +442,12 @@ export default function Main({ loadworld, username}: MainProps) {
                                   username={username}
                 />
             </div>
+            <Snackbar
+                open={openSnackbar}
+                message={snackbarMessage}
+                autoHideDuration={5000}
+                onClose={() => setOpenSnackbar(false)}
+            />
         </div>
     );
 }

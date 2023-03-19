@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Pallier, World} from "../world";
-import {Button} from "@mui/material";
+import {Button, Snackbar} from "@mui/material";
 import "../style/Upgrades.css"
 
 type UpgradesProps = {
@@ -13,7 +13,8 @@ type UpgradesProps = {
 function UpgradesComponent({ showUpgrades, world, onHireUpgrades, onCloseUpgrades}: UpgradesProps) {
 
     const [State, setState] = useState(showUpgrades);
-
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState("");
 
     function toggleUpgrades(){
         console.log("Toggle Managers, State =", State);
@@ -24,6 +25,8 @@ function UpgradesComponent({ showUpgrades, world, onHireUpgrades, onCloseUpgrade
     function hireUpgrades(upgrades : Pallier) {
         if (world.money >= upgrades.seuil) {
             onHireUpgrades(upgrades);
+            setOpenSnackbar(true);
+            setSnackbarMessage(`${upgrades.name} est débloquée!`);
         }
     }
 
@@ -59,6 +62,12 @@ function UpgradesComponent({ showUpgrades, world, onHireUpgrades, onCloseUpgrade
                     </div>
                 </div>
             }
+            <Snackbar
+                open={openSnackbar}
+                message={snackbarMessage}
+                autoHideDuration={5000}
+                onClose={() => setOpenSnackbar(false)}
+            />
         </div>
     );
 }

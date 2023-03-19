@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Pallier, World} from "../world";
-import {Button} from "@mui/material";
+import {Button, Snackbar} from "@mui/material";
 import "../style/Managers.css"
 
 
@@ -14,6 +14,8 @@ type ManagersProps = {
 function ManagersComponent({ showManagers, world, onHireManager, onClose}: ManagersProps) {
 
     const [State, setState] = useState(showManagers);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState("");
 
 
     function toggleManagers(){
@@ -25,6 +27,8 @@ function ManagersComponent({ showManagers, world, onHireManager, onClose}: Manag
     function hireManager(manager : Pallier) {
         if (world.money >= manager.seuil) {
             onHireManager(manager);
+            setOpenSnackbar(true);
+            setSnackbarMessage(`${manager.name} has been hired!`);
         }
     }
 
@@ -59,6 +63,12 @@ function ManagersComponent({ showManagers, world, onHireManager, onClose}: Manag
                     </div>
                 </div>
             }
+            <Snackbar
+                open={openSnackbar}
+                message={snackbarMessage}
+                autoHideDuration={5000}
+                onClose={() => setOpenSnackbar(false)}
+            />
         </div>
     );
 }
