@@ -170,9 +170,8 @@ export default function Main({loadworld, username}: MainProps) {
 
     function onProductionDone(p: Product): void {
         // calcul de la somme obtenue par la production du produit
-        let gain = (p.quantite * p.revenu)
-        world.score += gain
-        world.money += gain
+        let gain = (p.quantite * p.revenu * (1 + world.activeangels * world.angelbonus / 100))
+        world.money += gain;
         // ajout de la somme à l’argent possédé
         setWorld(prevWorld => ({...prevWorld, score: prevWorld.score + gain}));
     }
@@ -193,8 +192,6 @@ export default function Main({loadworld, username}: MainProps) {
             setWorld(prevWorld => ({...prevWorld, money: prevWorld.money}));
             let palierDebloques = product.palliers.filter((p => p.unlocked === false && p.seuil <= product.quantite));
             palierDebloques.forEach(p => {
-                //console.log("palliers")
-                //console.log(product.vitesse)
                 if (p.typeratio == "gain") {
                     product.revenu = product.revenu * p.ratio;
                     setOpenSnackbar(true);
@@ -317,7 +314,7 @@ export default function Main({loadworld, username}: MainProps) {
         <div className="main-container">
             <div className="header">
                 <h1 className="main-title">
-                    Welcome to {world.name}, {username}!
+                    Welcome to {world.name}, {username} !
                     <img className="logoW"
                          src={"http://localhost:4000/" + world.logo}
                          alt={world.name}
@@ -405,6 +402,7 @@ export default function Main({loadworld, username}: MainProps) {
                                   qtmulti={qtmulti.toString()}
                                   money={world.money}
                                   username={username}
+                                  world={world}
                 />
                 <ProductComponent product={world.products[1]}
                                   onProductionDone={onProductionDone}
@@ -412,6 +410,7 @@ export default function Main({loadworld, username}: MainProps) {
                                   onProductBuy={onProductBuy}
                                   money={world.money}
                                   username={username}
+                                  world={world}
                 />
                 <ProductComponent product={world.products[2]}
                                   onProductionDone={onProductionDone}
@@ -419,6 +418,7 @@ export default function Main({loadworld, username}: MainProps) {
                                   onProductBuy={onProductBuy}
                                   money={world.money}
                                   username={username}
+                                  world={world}
                 />
                 <ProductComponent product={world.products[3]}
                                   onProductionDone={onProductionDone}
@@ -426,6 +426,7 @@ export default function Main({loadworld, username}: MainProps) {
                                   qtmulti={qtmulti.toString()}
                                   money={world.money}
                                   username={username}
+                                  world={world}
                 />
                 <ProductComponent product={world.products[4]}
                                   onProductionDone={onProductionDone}
@@ -433,6 +434,7 @@ export default function Main({loadworld, username}: MainProps) {
                                   qtmulti={qtmulti.toString()}
                                   money={world.money}
                                   username={username}
+                                  world={world}
                 />
                 <ProductComponent product={world.products[5]}
                                   onProductionDone={onProductionDone}
@@ -440,6 +442,7 @@ export default function Main({loadworld, username}: MainProps) {
                                   qtmulti={qtmulti.toString()}
                                   money={world.money}
                                   username={username}
+                                  world={world}
                 />
             </div>
             <Snackbar

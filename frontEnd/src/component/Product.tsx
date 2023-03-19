@@ -1,4 +1,4 @@
-import {Product} from "../world";
+import {Product, World} from "../world";
 import '../style/Product.css'
 import {useState, useEffect, useRef} from "react";
 import MyProgressbar, {Orientation} from "./MyProgressbar";
@@ -15,10 +15,11 @@ type ProductProps = {
     qtmulti: string;
     money: number;
     username: string;
+    world: World;
 };
 
 
-function ProductComponent({product, onProductionDone, onProductBuy, qtmulti, money, username}: ProductProps) {
+function ProductComponent({product, onProductionDone, onProductBuy, qtmulti, world, money, username}: ProductProps) {
     const [timeLeft, setTimeLeft] = useState(product.timeleft);
     const lastUpdate = useRef(Date.now());
     const [maxBuyable, setMaxBuyable] = useState(0);
@@ -36,10 +37,11 @@ function ProductComponent({product, onProductionDone, onProductBuy, qtmulti, mon
             }
         }
     )
-    
+
     function quantityCalc(){
         if (product.cout < money || product.quantite != 0){
             return true;
+            product.timeleft = 0;
         } else {
             return false;
         }
@@ -132,17 +134,17 @@ function ProductComponent({product, onProductionDone, onProductBuy, qtmulti, mon
                  alt={product.name}/>
             <p className="product-description">{product.quantite}</p>
             <div className="product-price">
-                <span dangerouslySetInnerHTML={{__html: transform(product.revenu * product.quantite)}}></span>$
+                <span dangerouslySetInnerHTML={{__html: transform(product.quantite * product.revenu * (1 + world.activeangels * world.angelbonus / 100))}}></span>$
             </div>
             {quantityCalc() ? (
                 <div className="info-products">
                     <MyProgressbar className="barstyle"
                                    vitesse={product.vitesse}
                                    initialvalue={product.vitesse - timeLeft}
-                                   run={timeLeft > 0 || product.managerUnlocked}
+                                   run={timeLeft > 0 || product.managerUnlocked }
                                    frontcolor="#ff8400"
                                    backcolor="#feffff"
-                                   auto={product.managerUnlocked}
+                                   auto={product.managerUnlocked && product.quantite != 0}
                                    orientation={Orientation.horizontal}
                     />
                     <p className="timeLeft">Time left: {timeLeft}s</p>
@@ -152,7 +154,8 @@ function ProductComponent({product, onProductionDone, onProductBuy, qtmulti, mon
                             disabled={money < product.cout}>
                         Buy {qtmulti} for :
                         <span
-                            dangerouslySetInnerHTML={{__html: transform(product.cout * parseInt(qtmulti.substring(1)) + ((1 - coef) / (1 - product.croissance)) - 1)}}></span>$
+                            dangerouslySetInnerHTML={{__html: transform(product.cout *
+                                    parseInt(qtmulti.substring(1)) + ((1 - coef) / (1 - product.croissance)) - 1)}}></span>$
                     </button>
                 </div>
             ) : <p> Coût du produit : {product.cout} $</p> }

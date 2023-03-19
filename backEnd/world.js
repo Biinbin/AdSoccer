@@ -460,7 +460,7 @@ module.exports = {
         {
             "name": "Didier Deschamps",
             "logo": "icones/didierDeschamps.png",
-            "seuil": 10,
+            "seuil": 100,
             "idcible": 2,
             "ratio": 0,
             "typeratio": "gain",
@@ -469,7 +469,7 @@ module.exports = {
         {
             "name": "Pep Guardiola",
             "logo": "icones/pepGuardiola.png",
-            "seuil": 10,
+            "seuil": 500,
             "idcible": 3,
             "ratio": 0,
             "typeratio": "gain",
@@ -478,7 +478,7 @@ module.exports = {
         {
             "name": "Aimé Jacquet",
             "logo": "icones/Photo-Jacquet.png",
-            "seuil": 10,
+            "seuil": 1000,
             "idcible": 4,
             "ratio": 0,
             "typeratio": "gain",
@@ -487,7 +487,7 @@ module.exports = {
         {
             "name": "Jürgen Klopp",
             "logo": "icones/jurgen-klopp.png",
-            "seuil": 10,
+            "seuil": 5000,
             "idcible": 5,
             "ratio": 0,
             "typeratio": "gain",
@@ -496,7 +496,7 @@ module.exports = {
         {
             "name": "Carlo Ancelotti",
             "logo": "icones/carloAncelotti.png",
-            "seuil": 10,
+            "seuil": 10000,
             "idcible": 6,
             "ratio": 0,
             "typeratio": "gain",

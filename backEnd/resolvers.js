@@ -105,7 +105,7 @@ module.exports = {
             } else {
                 context.world.money -= produit.cout * ((1 - coef) / (1 - produit.croissance));
                 produit.quantite += qte;
-                produit.cout =produit.cout * Math.pow(produit.croissance, qte);
+                produit.cout = produit.cout * Math.pow(produit.croissance, qte);
 
                 let palierDebloques = produit.palliers.filter((p => p.unlocked === false && p.seuil < produit.quantite));
                 palierDebloques.forEach(p => {
@@ -201,27 +201,25 @@ module.exports = {
         },
 
         resetWorld(parent, args, context) {
+            updateScore(context)
             let actWorld = context.world;
-            let score = actWorld.score;
-            let activeangels = actWorld.activeangels;
-            let totalangels = actWorld.totalangels;
+            let actScore = actWorld.score;
+            let actTotalAngels = actWorld.totalangels;
+            let actActiveAngels = actWorld.activeangels;
 
             //Réinitialisation
             let nWorld = worldjs;
 
             //Récupération des anges
-            nWorld.totalangels = totalangels;
-            nWorld.activeangels = 0;
+            nWorld.totalangels = actTotalAngels;
+            nWorld.activeangels = actActiveAngels;
 
-            //Calcul des anges
-            let activeAngelsBis = Math.round(150 * Math.sqrt(score / Math.pow(10, 4)));
-
-            if (activeAngelsBis > 0) {
-                nWorld.totalangels += activeAngelsBis
-            }
+                nWorld.activeangels += Math.round(150 * Math.sqrt(actScore / Math.pow(10, 4)))
+                nWorld.totalangels += Math.round(150 * Math.sqrt(actScore / Math.pow(10, 4)))
+                console.log("active : ", nWorld.activeangels)
+                console.log("totaux : ", nWorld.totalangels)
 
             //Réinitialisation du score à 0
-            nWorld.score = 0;
 
             context.world = nWorld;
             saveWorld(context);

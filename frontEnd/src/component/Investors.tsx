@@ -16,7 +16,6 @@ function InvestorsComponent({ showInvestors, username, world, onCloseInvestors}:
     const RESET_WORLD = gql`
          mutation resetWorld {
             resetWorld {
-            
     name
     logo
     money
@@ -92,9 +91,8 @@ function InvestorsComponent({ showInvestors, username, world, onCloseInvestors}:
             }
         }
     )
-    let score = world.score;
-    //Calcul des anges
-    let activeAngelsBis = Math.round(150 * Math.sqrt(score / Math.pow(10, 4)));
+
+    let affichageAnges = Math.round(150 * Math.sqrt(world.score / Math.pow(10, 4)));
 
     function toggleInvestors(){
         //console.log("Toggle Managers, State =", State);
@@ -111,12 +109,12 @@ function InvestorsComponent({ showInvestors, username, world, onCloseInvestors}:
                     </div>
                     <div>
                         <div className="infosinvestors">
-                            <div className="totalangels">Total des Anges : {world.totalangels}</div>
+                            <div className="totalangels">Anges actifs : {world.activeangels}</div>
                             <div className="angelbonus">{world.angelbonus}% de bonus par anges</div>
                         </div>
                         <div>
                             <button className="button-reset" onClick={() => { resetWorld(); window.location.reload(); }}>
-                                Reset World avec {activeAngelsBis} nouveaux anges en plus
+                                Reset World avec {affichageAnges} nouveaux anges en plus
                             </button>
                         </div>
                         <button className="closebutton" onClick={toggleInvestors}>Close</button>
