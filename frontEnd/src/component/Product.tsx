@@ -1,7 +1,7 @@
 import {Product} from "../world";
 import '../style/Product.css'
 import {useState, useEffect, useRef} from "react";
-import MyProgressbar, { Orientation } from "./MyProgressbar";
+import MyProgressbar, {Orientation} from "./MyProgressbar";
 import {useInterval} from './MyInterval';
 import {transform} from "./utils";
 import managers from "./Managers";
@@ -14,11 +14,11 @@ type ProductProps = {
     onProductBuy: (quantity: number, product: Product) => void;
     qtmulti: string;
     money: number;
-    username : string;
+    username: string;
 };
 
 
-function ProductComponent({ product, onProductionDone,onProductBuy, qtmulti, money, username}: ProductProps) {
+function ProductComponent({product, onProductionDone, onProductBuy, qtmulti, money, username}: ProductProps) {
     const [timeLeft, setTimeLeft] = useState(product.timeleft);
     const lastUpdate = useRef(Date.now());
     const [maxBuyable, setMaxBuyable] = useState(0);
@@ -29,18 +29,27 @@ function ProductComponent({ product, onProductionDone,onProductBuy, qtmulti, mon
              }
          }`
     const [lancerProduction] = useMutation(LANCER_PRODUCTION,
-        { context: { headers: { "x-user": username }},
+        {
+            context: {headers: {"x-user": username}},
             onError: (error): void => {
                 console.log(error);
             }
         }
     )
+    
+    function quantityCalc(){
+        if (product.cout < money || product.quantite != 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-    function startFabrication () {
-        if(product.quantite>=1){
+    function startFabrication() {
+        if (product.quantite >= 1) {
             lastUpdate.current = Date.now();
             setTimeLeft(product.vitesse);
-            lancerProduction({ variables: { id: product.id } });
+            lancerProduction({variables: {id: product.id}});
         }
     };
 
@@ -59,16 +68,17 @@ function ProductComponent({ product, onProductionDone,onProductBuy, qtmulti, mon
             } else {
                 setTimeLeft(timeLeft - end);
             }
-        }else{
-            if (timeLeft === 0) {
-            return;
-        }
-        if (end >= timeLeft) {
-            setTimeLeft(0);
-            onProductionDone(product);
         } else {
-            setTimeLeft(timeLeft - end);
-        }}
+            if (timeLeft === 0) {
+                return;
+            }
+            if (end >= timeLeft) {
+                setTimeLeft(0);
+                onProductionDone(product);
+            } else {
+                setTimeLeft(timeLeft - end);
+            }
+        }
     }
 
     useInterval(() => calcScore(), 100)
@@ -86,6 +96,7 @@ function ProductComponent({ product, onProductionDone,onProductBuy, qtmulti, mon
             //nombre maximal d'unités achetables en prenant en compte le taux de croissance
         }
     }
+
     function handleBuyProduct() {
         const canBuy = calcMaxCanBuy();
         switch (qtmulti) {
@@ -117,28 +128,34 @@ function ProductComponent({ product, onProductionDone,onProductBuy, qtmulti, mon
 
     return (
         <div className="product-container">
-            <img className="product-image" src={"http://localhost:4000/" + product.logo} onClick={startFabrication} alt={product.name} />
+            <img className="product-image" src={"http://localhost:4000/" + product.logo} onClick={startFabrication}
+                 alt={product.name}/>
             <p className="product-description">{product.quantite}</p>
             <div className="product-price">
-                <span dangerouslySetInnerHTML={{__html: transform(product.revenu*product.quantite)}}></span>$
+                <span dangerouslySetInnerHTML={{__html: transform(product.revenu * product.quantite)}}></span>$
             </div>
-            <MyProgressbar className="barstyle"
-                           vitesse={product.vitesse}
-                           initialvalue={product.vitesse - timeLeft}
-                           run={timeLeft>0 || product.managerUnlocked}
-                           frontcolor="#ff8400"
-                           backcolor="#feffff"
-                           auto={product.managerUnlocked}
-                           orientation={Orientation.horizontal}
-            />
-            <p>Time left: {timeLeft}s</p>
-            <button className="product-buy-button"
-                    onClick={handleBuyProduct}
-                    id={"handleBuyProduct" + product.id.toString()}
-                    disabled={money < product.cout}>
-                Buy {qtmulti} for :
-                <span dangerouslySetInnerHTML={{__html: transform(product.cout*parseInt(qtmulti.substring(1))+((1 - coef) / (1 - product.croissance))-1)}}></span>$
-            </button>
+            {quantityCalc() ? (
+                <div className="info-products">
+                    <MyProgressbar className="barstyle"
+                                   vitesse={product.vitesse}
+                                   initialvalue={product.vitesse - timeLeft}
+                                   run={timeLeft > 0 || product.managerUnlocked}
+                                   frontcolor="#ff8400"
+                                   backcolor="#feffff"
+                                   auto={product.managerUnlocked}
+                                   orientation={Orientation.horizontal}
+                    />
+                    <p className="timeLeft">Time left: {timeLeft}s</p>
+                    <button className="product-buy-button"
+                            onClick={handleBuyProduct}
+                            id={"handleBuyProduct" + product.id.toString()}
+                            disabled={money < product.cout}>
+                        Buy {qtmulti} for :
+                        <span
+                            dangerouslySetInnerHTML={{__html: transform(product.cout * parseInt(qtmulti.substring(1)) + ((1 - coef) / (1 - product.croissance)) - 1)}}></span>$
+                    </button>
+                </div>
+            ) : <p> Coût du produit : {product.cout} $</p> }
         </div>
     );
 }

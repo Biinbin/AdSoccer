@@ -112,7 +112,7 @@ function InvestorsComponent({ showInvestors, username, world, onCloseInvestors}:
                     <div>
                         <div className="infosinvestors">
                             <div className="totalangels">Total des Anges : {world.totalangels}</div>
-                            <div className="angelbonus">2% de bonus par anges</div>
+                            <div className="angelbonus">{world.angelbonus}% de bonus par anges</div>
                         </div>
                         <div>
                             <button className="button-reset" onClick={() => { resetWorld(); window.location.reload(); }}>
