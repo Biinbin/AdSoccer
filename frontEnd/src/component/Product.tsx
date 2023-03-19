@@ -154,8 +154,8 @@ function ProductComponent({product, onProductionDone, onProductBuy, qtmulti, wor
                             disabled={money < product.cout}>
                         Buy {qtmulti} for :
                         <span
-                            dangerouslySetInnerHTML={{__html: transform(product.cout *
-                                    parseInt(qtmulti.substring(1)) + ((1 - coef) / (1 - product.croissance)) - 1)}}></span>$
+                            dangerouslySetInnerHTML={{__html: transform((product.cout *
+                                    parseInt(qtmulti.substring(1))) + ((1 - coef) / (1 - product.croissance)) - 1)}}></span>$
                     </button>
                 </div>
             ) : <p> Coût du produit : {product.cout} $</p> }

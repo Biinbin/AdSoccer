@@ -183,9 +183,7 @@ export default function Main({loadworld, username}: MainProps) {
             throw new Error(
                 `Le produit avec l'id ${product.id} n'existe pas`);
         } else {
-            //console.log("money"+ product.cout)
             world.money -= product.cout * ((1 - coef) / (1 - product.croissance));
-            //console.log(world.money)
             product.quantite += quantity;
             product.cout = product.cout * Math.pow(product.croissance, quantity)
 
